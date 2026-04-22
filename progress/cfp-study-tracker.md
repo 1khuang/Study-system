@@ -1,5 +1,20 @@
 # CFP Exam Study Tracker
 
+> **Legacy / Case-Study Artifact.** This file was the tracker for the
+> original CFP-only version of this repo. After the refactor to a
+> topic-agnostic system, it is preserved verbatim as a worked example of
+> what a populated tracker looks like.
+>
+> The active topic configuration now lives in
+> [`/topic-config.md`](../topic-config.md), and the generic template the
+> coach uses to generate new trackers lives at
+> [`STUDY-TRACKER-TEMPLATE.md`](./STUDY-TRACKER-TEMPLATE.md). For the
+> init / daily-update workflow see [`/INIT.md`](../INIT.md).
+>
+> No content below this note has been changed.
+
+---
+
 **Last Updated**: November 7, 2025
 **Exam Date**: November 10, 2025
 **Days Until Exam**: 3 days ⚠️

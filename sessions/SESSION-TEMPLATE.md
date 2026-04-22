@@ -1,65 +1,100 @@
-# Session Notes - [DATE]
+# Session Notes — {{YYYY-MM-DD}}
 
 ## Session Overview
-- **Date**: [YYYY-MM-DD]
-- **Duration**: [Approximate time spent]
-- **Main Topics**: [Brief list]
+- **Date**: {{YYYY-MM-DD}}
+- **Topic**: {{Topic Name from topic-config.md}}
+- **Duration**: {{e.g. ~45 min}}
+- **Format**: {{e.g. Q&A / worked examples / quiz / spaced review}}
+- **Main Focus**: {{1–2 lines on what this session was about}}
+- **Days Until Target Date**: {{N or N/A}}
 
 ---
 
-## Questions Asked
+## Session Context
 
-### Question 1: [Topic]
-**Student's Question**: [Exact question or topic requested]
+**Learner Request**: {{What the learner asked for at the start}}
 
-**Initial Understanding**: [What student knew before explanation]
-
-**Explanation Given**: [Summary of concept explained]
-
-**Comprehension Check**:
-- Question asked: [Verification question posed]
-- Student's response: [How they answered]
-- Understanding level: [Strong/Partial/Needs more work]
-
-**Follow-up**: [Additional clarifications or next steps]
+**Linked Domains / Sub-topics** (from `topic-config.md`):
+- {{e.g. B.10 Financing strategies and debt management}}
+- {{e.g. F.51 Distribution rules and taxation}}
 
 ---
 
-### Question 2: [Topic]
-[Same structure as above]
+## Topics Covered
+
+### Topic 1: {{name}}
+
+- **Question(s) asked**: {{verbatim if reasonable}}
+- **Initial understanding**: {{what learner knew going in}}
+- **Explanation given**: {{short summary of what was taught}}
+- **Sources cited**: {{links / pages — required if config verification level is `strict`}}
+- **Comprehension check**: {{question posed → learner's answer → assessment}}
+- **Result**: {{Mastered / Partial / Needs more work}}
+
+### Topic 2: {{name}}
+{{Same structure as above. Repeat as needed.}}
 
 ---
 
-## Knowledge Gaps Identified
+## Knowledge Gap Changes
 
-| Topic | Severity | Notes |
-|-------|----------|-------|
-| [Topic name] | High/Med/Low | [What was challenging] |
+> Standardized record of how the gap list moved this session. The coach uses
+> this to update the Knowledge Gaps tables in the tracker.
+
+### 🆕 New Gaps Identified
+| Gap | Domain | Severity (H/M/L) | Why it's a gap |
+|-----|--------|------------------|----------------|
+|     |        |                  |                |
+
+### ✅ Gaps Resolved
+| Gap | Severity Before | How it was closed |
+|-----|-----------------|-------------------|
+|     |                 |                   |
+
+### 🔁 Gaps Still Open (Touched This Session)
+| Gap | Progress made | Next step |
+|-----|---------------|-----------|
+|     |               |           |
 
 ---
 
-## Topics Mastered Today
+## Sub-topics Newly Mastered
 
-| Topic | Confidence | Notes |
-|-------|------------|-------|
-| [Topic name] | High/Med | [What they understood well] |
+| Sub-topic (code + name) | Confidence (H / M-H / M) | Key points understood |
+|-------------------------|--------------------------|-----------------------|
+|                         |                          |                       |
+
+## Sub-topics Touched but Not Yet Mastered
+
+| Sub-topic (code + name) | What's understood | What still needs work |
+|-------------------------|-------------------|-----------------------|
+|                         |                   |                       |
 
 ---
 
-## Key Concepts Covered
-
-- **[Concept 1]**: [Brief note]
-- **[Concept 2]**: [Brief note]
+## Key Insights / Memorable Moments
+- {{e.g. learner spotted an inconsistency in the question wording}}
+- {{e.g. analogy that finally made the concept click}}
 
 ---
 
 ## Action Items for Next Session
 
-- [ ] Review: [Topics that need follow-up]
-- [ ] Practice: [Areas needing more examples]
-- [ ] Explore: [New related topics to cover]
+- [ ] **Review**: {{topics to revisit}}
+- [ ] **Practice**: {{problems / drills}}
+- [ ] **Explore**: {{new sub-topics suggested by today's gaps}}
 
 ---
 
-## Notes
-[Any additional observations about learning style, common mistakes, areas of strength, etc.]
+## Tracker Update Checklist
+
+> The coach must complete this before ending the session.
+> See `INIT.md` §2 for the full daily-update workflow.
+
+- [ ] Updated **Last Updated** date in tracker
+- [ ] Updated **Quick Stats** counts
+- [ ] Moved newly mastered sub-topics into the right domain section
+- [ ] Updated **Knowledge Gaps** tables (new / resolved / touched)
+- [ ] Recomputed **Domain Progress Summary**
+- [ ] Recomputed **Next-Step Study Plan**
+- [ ] Appended row to **Session Index**

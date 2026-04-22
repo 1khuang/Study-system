@@ -1,168 +1,175 @@
-# CFP Exam Study Repository
+# Study-System — A Topic-Agnostic Guided-Learning Repo
 
-🎉 **I PASSED the CFP Exam on November 10, 2025!** 🎉
+A minimal, file-based learning system you can point at **any** study topic —
+an exam, a certification, a language, a framework, a textbook — and turn an
+AI assistant (Claude Code, etc.) into a patient, Socratic study coach that
+**remembers your progress across sessions**.
 
-This is my personal study repository that helped me pass the Certified Financial Planner (CFP) exam on my second attempt. After failing in November 2024, I rebuilt my study approach using AI-powered guided learning with Claude Code - and it made all the difference.
-
-**Thanks to AI and Claude Code**, I went from a failed attempt to **82% mastery** (60/73 topics) across 23 focused study sessions, ultimately passing the exam.
-
-**Let's connect on LinkedIn**: [linkedin.com/in/chenran818](https://linkedin.com/in/chenran818) ,**Twitter(X)** [https://x.com/chenran818](https://x.com/chenran818) 和 **知乎**[https://www.zhihu.com/people/chenran](https://www.zhihu.com/people/chenran)
+Inspired by [karpathy's gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
+on using AI as a learning partner. This repo started as a CFP-exam-only
+study log (and the original learner [passed the exam in November 2025 🎉](#case-study-cfp-exam-pass)).
+It has since been refactored into a topic-agnostic template — the CFP files
+are kept in place as a working **case study** of what the system looks like
+after a few weeks of real use.
 
 ---
 
-**Final Exam Stats**:
-- **Exam Date**: November 10, 2025 ✅ PASSED
-- **Final Progress**: 82% (60/73 CFP topics mastered)
-- **Study Sessions**: 23 sessions (Oct 11 - Nov 7, 2025)
-- **Study Materials**: 2024 Dalton Review slides (not included in repo)
+## What the system does
 
-## How This Works
+For any topic you choose, the coach will:
 
-This repository uses Claude Code as an interactive CFP exam tutor that:
-- Teaches using the Socratic method (asking what you know first)
-- Provides concise (~200 word) explanations
-- Verifies your understanding with follow-up questions
-- Adapts teaching style based on your responses
-- **Tracks every learning session to personalize your study experience**
+- 🧠 **Teach Socratically** — ask what you know first, then explain in
+  ~200-word chunks, then check understanding before moving on.
+- 📒 **Log every session** — one detailed `session-notes.md` per study day.
+- 📈 **Maintain a single tracker** — `progress/<topic>-study-tracker.md` is
+  the always-current source of truth for mastered sub-topics, open
+  knowledge gaps, and what to study next.
+- 🎯 **Re-prioritize automatically** — domain weights × coverage × open gaps
+  → the next-step study plan after every session.
+- 🔍 **Cite or admit uncertainty** — strictness is configurable per topic
+  (strict / standard / relaxed).
 
-## Repository Structure
+---
+
+## Repo Layout
 
 ```
-/sessions/                    # 23 daily learning sessions documented
-  /2025-10-11/               # One folder per study day
-  /2025-10-17/               # Sessions from Oct 11 - Nov 7
-  /2025-11-07/
-  SESSION-TEMPLATE.md        # Template for documenting sessions
+topic-config.md              ← what you are studying (you fill this in)
+topic-config.template.md     ← blank template to copy from
+INIT.md                      ← the init + daily-update workflows
+CLAUDE.md                    ← coach behavior (Socratic, two-step tracking)
 
-/progress/                    # Single source of truth for exam prep
-  cfp-study-tracker.md       # Comprehensive tracker with:
-                             # - All 73 CFP topics mapped
-                             # - Topics mastered (60/73)
-                             # - Knowledge gaps identified
-                             # - Study plan for remaining days
+progress/
+  STUDY-TRACKER-TEMPLATE.md  ← generic tracker template
+  cfp-study-tracker.md       ← legacy CFP tracker (case study)
 
-CLAUDE.md                     # AI tutor instructions (Socratic method)
-README.md                     # This file
+sessions/
+  SESSION-TEMPLATE.md        ← generic per-session note template
+  YYYY-MM-DD/
+    session-notes.md         ← one folder per study day
 ```
 
-## How to Use
+---
 
-### Daily Study Sessions
+## Quick Start (new topic)
 
-1. Open Claude Code in this repository
-2. Ask questions about CFP topics naturally - just like talking to a tutor
-3. Answer the comprehension check questions Claude asks
-4. After each session, Claude will automatically document:
-   - What you learned
-   - What you struggled with
-   - What you mastered
-   - What to review next
+1. **Clone** this repo (or use it as a template).
+2. _(Optional)_ Clear the CFP case-study data:
+   ```bash
+   rm -rf progress/cfp-study-tracker.md sessions/2025-*
+   ```
+3. **Configure your topic**:
+   ```bash
+   cp topic-config.template.md topic-config.md
+   # edit topic-config.md: topic name, target date, domains + weights,
+   # materials, verification level, personalization
+   ```
+4. **Open Claude Code in the repo** and say:
+   > "Initialize the tracker."
 
-### Review Sessions
+   The coach will read `topic-config.md`, generate
+   `progress/<short-code>-study-tracker.md` from the template, and propose
+   the first study session based on the highest-weight, lowest-coverage
+   domain.
+5. **Just start asking questions.** After each session, the coach writes
+   a session notes file under `/sessions/YYYY-MM-DD/` and updates the
+   tracker — no manual bookkeeping required.
 
-When you want to review, simply ask Claude:
-- "Let's review topics I've struggled with"
+Full step-by-step is in [`INIT.md`](./INIT.md).
+
+---
+
+## Daily Loop
+
+| When | What you do | What the coach does |
+|------|-------------|---------------------|
+| Start of session | Ask a question, request practice, or say "what should I study today?" | Reads `topic-config.md`, the tracker, and the latest session notes for context |
+| During | Answer comprehension checks honestly — including "I don't know" | Teaches Socratically; cites sources at the strictness level your config requires |
+| End of session | Nothing — just stop | Writes today's `session-notes.md`, updates the tracker (mastered / gaps / next steps) |
+
+Common things to ask between sessions:
 - "What should I focus on today?"
-- "Quiz me on my weak areas"
-- "Show me my progress"
-
-Claude will read your session history and create a personalized review based on your past performance.
-
-### Track Your Progress
-
-View your comprehensive study tracker at `/progress/cfp-study-tracker.md` to see:
-- Overall exam readiness (currently 82%)
-- Which domains are complete (4 major domains ✅)
-- Remaining knowledge gaps
-- Prioritized study plan for exam day
-
-## Study Philosophy
-
-**Guided Learning Approach:**
-- Conversational and judgment-free
-- Builds on your existing knowledge
-- Checks understanding before moving forward
-- Adapts to your learning style
-- Focuses on deep understanding, not just memorization
-
-## Study Materials
-
-I used the **2024 Dalton Review Slides** for my preparation (not included in this repo due to copyright). You can use your own CFP study materials - the AI tutor methodology works with any content.
-
-## Free Study Resources
-
-In addition to the Dalton Review materials, here are some excellent **free resources** that can supplement your CFP exam prep:
-
-**Podcasts & Audio:**
-- [Open Exam Prep Podcast](https://open.spotify.com/show/55EmWfdtPaK641q4Rk3mI1) - Free CFP exam prep podcast on Spotify
-- [Financial Planning Essentials Playlist](https://open.spotify.com/playlist/6GUIZvnpaiOiYmXkanqwZ8) - Study music playlist on Spotify
-
-**Video Content:**
-- [Open Exam Prep YouTube](https://www.youtube.com/@Open-exam-prep) - Free video content covering CFP exam topics
-
-**Website:**
-- [open-exam-prep.com](https://open-exam-prep.com/) - Additional free resources and study materials
-
-These free resources are great for passive learning during commutes, workouts, or downtime.
-
-## Key Features
-
-**Personalized Learning**:
-- 23 documented study sessions with detailed notes
-- Socratic teaching method (builds on what you already know)
-- Adaptive explanations based on your responses
-- Practice problems tailored to your weak areas
-
-**Comprehensive Tracking**:
-- Every session automatically documented
-- Knowledge gaps identified and tracked
-- Topics mastered with confidence levels
-- Progress measured against exam weights
-
-**Evidence-Based Approach**:
-- All answers verified with authoritative sources (IRS.gov, CFP Board)
-- No guessing on technical questions
-- Citations provided for complex rules
-- Focus on understanding "why" not just "what"
-
-## How to Use This Repository for Your Own CFP Exam Prep
-
-Want to use this AI-powered study system for your own CFP exam preparation? It's simple:
-
-1. **Clone this repository**:
-   ```bash
-   git clone https://github.com/chenran818/CFP-Study.git
-   cd CFP-Study
-   ```
-
-2. **Clear my study history** (start fresh):
-   ```bash
-   rm -rf progress/ sessions/
-   ```
-
-3. **Run Claude Code**:
-   ```bash
-   claude-code
-   ```
-
-4. **That's it!** Start asking CFP questions and Claude will:
-   - Teach you using the Socratic method
-   - Create new `progress/` and `sessions/` folders automatically
-   - Track your learning journey just like it did for me
-   - Adapt to your learning style
-
-The `CLAUDE.md` file contains all the instructions for how Claude should tutor you. **It works magically!**
-
-## Getting Started
-
-Just start a conversation with Claude Code and ask your first CFP question. Claude will guide you from there while automatically tracking your progress.
+- "Quiz me on my weak areas."
+- "Show me my progress."
+- "Re-prioritize based on my exam date."
 
 ---
 
-## About the Author
+## Switching Topics
 
-After failing the CFP exam in November 2024, I knew I needed a different approach. Traditional study methods weren't working for me. Using Claude Code as my AI study partner transformed my preparation - the Socratic teaching method, personalized feedback, and systematic progress tracking made complex financial planning concepts finally click.
+Because all behavior is driven by `topic-config.md`, switching topics is
+just swapping that one file:
 
-If you're preparing for the CFP exam or any professional certification, I hope this repository inspires you to leverage AI tools in your learning journey.
+```bash
+cp topic-config.md topic-config.cfp.bak.md   # save the old config
+cp topic-config.template.md topic-config.md  # blank it out
+# fill in your new topic, then ask the coach to "initialize the tracker"
+```
 
-**Connect with me**: [linkedin.com/in/chenran818](https://linkedin.com/in/chenran818)
+A new `progress/<new-short-code>-study-tracker.md` is generated; the old
+tracker stays in `progress/` as historical reference.
+
+---
+
+## Migration Note (from the CFP-only version)
+
+If you knew this repo as the CFP study repo, here's what changed:
+
+- **`CLAUDE.md`** is no longer CFP-specific. The CFP domain list has moved
+  into `topic-config.md`.
+- **`topic-config.md`** is new — it's the only file that knows about your
+  topic.
+- **`progress/STUDY-TRACKER-TEMPLATE.md`** is the new generic tracker.
+- **`progress/cfp-study-tracker.md`** is preserved verbatim as a worked
+  example of what a populated tracker looks like.
+- **`sessions/SESSION-TEMPLATE.md`** has been generalized (no exam-specific
+  fields) and now has a standard "new gaps / resolved gaps" section.
+- **All historical session notes are kept** under `sessions/2025-*/`.
+
+Nothing is lost; the CFP files now play the role of "an example topic
+already in use".
+
+---
+
+## Case Study: CFP Exam Pass
+
+The original learner (chenran) used this repo to prepare for the
+**Certified Financial Planner (CFP) exam** after a previous failed attempt
+in November 2024. Across 23 sessions (Oct 11 – Nov 7, 2025), they reached
+**82% mastery (60/73 sub-topics)** and **passed the CFP exam on
+November 10, 2025**.
+
+The CFP `topic-config.md`, `progress/cfp-study-tracker.md`, and
+`sessions/2025-*` are kept in this repo as a real-world demonstration of
+what the system looks like after several weeks of disciplined use.
+
+Connect with the original author: [LinkedIn](https://linkedin.com/in/chenran818) ·
+[Twitter / X](https://x.com/chenran818) ·
+[知乎](https://www.zhihu.com/people/chenran)
+
+---
+
+## Free Supplementary Resources (for CFP specifically)
+
+If you happen to be using this repo for CFP prep, these free resources are
+nice complements to the workflow above:
+
+- [Open Exam Prep Podcast](https://open.spotify.com/show/55EmWfdtPaK641q4Rk3mI1)
+- [Open Exam Prep YouTube](https://www.youtube.com/@Open-exam-prep)
+- [open-exam-prep.com](https://open-exam-prep.com/)
+- [Financial Planning Essentials playlist](https://open.spotify.com/playlist/6GUIZvnpaiOiYmXkanqwZ8)
+
+For other topics, list your own materials in `topic-config.md` §4 — the
+coach will prefer to cite them.
+
+---
+
+## Philosophy
+
+- **Conversational and judgment-free.** It's safe to not know things.
+- **Build on what you already know.** Every explanation starts with your
+  baseline.
+- **Check understanding before moving on.** No silent skipping.
+- **Adapt to the learner.** Different analogies, examples, granularity.
+- **Deep understanding > memorization.** Aim for skills you keep after the
+  exam is over.
