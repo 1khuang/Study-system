@@ -6,11 +6,11 @@ AI assistant (Claude Code, etc.) into a patient, Socratic study coach that
 **remembers your progress across sessions**.
 
 Inspired by [karpathy's gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
-on using AI as a learning partner. This repo started as a CFP-exam-only
-study log (and the original learner [passed the exam in November 2025 🎉](#case-study-cfp-exam-pass)).
-It has since been refactored into a topic-agnostic template — the CFP files
-are kept in place as a working **case study** of what the system looks like
-after a few weeks of real use.
+on using AI as a learning partner. The repo originated as a CFP-exam study
+log (the original learner passed the exam in November 2025 🎉) and has
+since been refactored into a clean, topic-agnostic template — clone it,
+start chatting with your coding agent, and the coach will set everything
+up for you.
 
 ---
 
@@ -34,46 +34,55 @@ For any topic you choose, the coach will:
 ## Repo Layout
 
 ```
-topic-config.md              ← what you are studying (you fill this in)
-topic-config.template.md     ← blank template to copy from
+topic-config.md              ← what you are studying (blank template; you fill this in)
+topic-config.template.md     ← reference copy of the same template
 INIT.md                      ← the init + daily-update workflows
 CLAUDE.md                    ← coach behavior (Socratic, two-step tracking)
+AGENTS.md                    ← same instructions for Codex / opencode / other agents
 
 progress/
-  STUDY-TRACKER-TEMPLATE.md  ← generic tracker template
-  cfp-study-tracker.md       ← legacy CFP tracker (case study)
+  STUDY-TRACKER-TEMPLATE.md  ← generic tracker template (the coach generates
+                               progress/<short-code>-study-tracker.md from this)
 
 sessions/
   SESSION-TEMPLATE.md        ← generic per-session note template
-  YYYY-MM-DD/
-    session-notes.md         ← one folder per study day
+  YYYY-MM-DD/                ← one folder per study day (created by the coach)
+    session-notes.md
 ```
 
 ---
 
-## Quick Start (new topic)
+## Quick Start
 
 1. **Clone** this repo (or use it as a template).
-2. _(Optional)_ Clear the CFP case-study data:
-   ```bash
-   rm -rf progress/cfp-study-tracker.md sessions/2025-*
-   ```
-3. **Configure your topic**:
-   ```bash
-   cp topic-config.template.md topic-config.md
-   # edit topic-config.md: topic name, target date, domains + weights,
-   # materials, verification level, personalization
-   ```
-4. **Open Claude Code in the repo** and say:
-   > "Initialize the tracker."
+2. **Open it in your coding agent of choice** — Claude Code, Codex, opencode,
+   etc. — and just start chatting. Say something like:
+   > "I want to study X. Initialize the tracker."
 
-   The coach will read `topic-config.md`, generate
-   `progress/<short-code>-study-tracker.md` from the template, and propose
+   The coach reads `CLAUDE.md` (or `AGENTS.md`), notices that
+   `topic-config.md` is still in template state, and walks you through
+   filling it in (topic name, target date, domains + weights, materials,
+   verification level, personalization). It then generates
+   `progress/<short-code>-study-tracker.md` from the template and proposes
    the first study session based on the highest-weight, lowest-coverage
    domain.
-5. **Just start asking questions.** After each session, the coach writes
-   a session notes file under `/sessions/YYYY-MM-DD/` and updates the
-   tracker — no manual bookkeeping required.
+3. **Just keep asking questions.** After each session, the coach writes a
+   session-notes file under `/sessions/YYYY-MM-DD/` and updates the tracker
+   — no manual bookkeeping required.
+
+> **Tip:** You can also fill in `topic-config.md` by hand first and then
+> ask the coach to "initialize the tracker" — both flows work.
+
+### Compatibility with `/init`
+
+Most coding agents have an `/init` command that scaffolds an instructions
+file for the project (`CLAUDE.md` for Claude Code, `AGENTS.md` for Codex
+and opencode). This repo already ships both files, so:
+
+- You **don't need to run `/init`** — the agent will pick up the existing
+  instructions automatically.
+- If you do run `/init`, please keep `CLAUDE.md` / `AGENTS.md` intact (or
+  merge, don't overwrite) so the study-coach behavior is preserved.
 
 Full step-by-step is in [`INIT.md`](./INIT.md).
 
@@ -101,58 +110,33 @@ Because all behavior is driven by `topic-config.md`, switching topics is
 just swapping that one file:
 
 ```bash
-cp topic-config.md topic-config.cfp.bak.md   # save the old config
-cp topic-config.template.md topic-config.md  # blank it out
+cp topic-config.md topic-config.<old-topic>.bak.md   # save the old config
+cp topic-config.template.md topic-config.md          # blank it out
 # fill in your new topic, then ask the coach to "initialize the tracker"
 ```
 
-A new `progress/<new-short-code>-study-tracker.md` is generated; the old
-tracker stays in `progress/` as historical reference.
+A new `progress/<new-short-code>-study-tracker.md` is generated; any
+previous tracker stays in `progress/` as historical reference.
 
 ---
 
-## Migration Note (from the CFP-only version)
+## Origin: CFP Exam Case Study
 
-If you knew this repo as the CFP study repo, here's what changed:
+This system was originally built and battle-tested by the original learner
+(chenran) preparing for the **Certified Financial Planner (CFP) exam**.
+Across 23 sessions (Oct 11 – Nov 7, 2025) they reached 82% mastery
+(60/73 sub-topics) and **passed the CFP exam on November 10, 2025**.
 
-- **`CLAUDE.md`** is no longer CFP-specific. The CFP domain list has moved
-  into `topic-config.md`.
-- **`topic-config.md`** is new — it's the only file that knows about your
-  topic.
-- **`progress/STUDY-TRACKER-TEMPLATE.md`** is the new generic tracker.
-- **`progress/cfp-study-tracker.md`** is preserved verbatim as a worked
-  example of what a populated tracker looks like.
-- **`sessions/SESSION-TEMPLATE.md`** has been generalized (no exam-specific
-  fields) and now has a standard "new gaps / resolved gaps" section.
-- **All historical session notes are kept** under `sessions/2025-*/`.
-
-Nothing is lost; the CFP files now play the role of "an example topic
-already in use".
-
----
-
-## Case Study: CFP Exam Pass
-
-The original learner (chenran) used this repo to prepare for the
-**Certified Financial Planner (CFP) exam** after a previous failed attempt
-in November 2024. Across 23 sessions (Oct 11 – Nov 7, 2025), they reached
-**82% mastery (60/73 sub-topics)** and **passed the CFP exam on
-November 10, 2025**.
-
-The CFP `topic-config.md`, `progress/cfp-study-tracker.md`, and
-`sessions/2025-*` are kept in this repo as a real-world demonstration of
-what the system looks like after several weeks of disciplined use.
+The CFP-specific tracker and session notes have been removed so the repo
+ships as a clean template, but the workflow, file structure, and coach
+behavior are exactly what was used in that successful run.
 
 Connect with the original author: [LinkedIn](https://linkedin.com/in/chenran818) ·
 [Twitter / X](https://x.com/chenran818) ·
 [知乎](https://www.zhihu.com/people/chenran)
 
----
-
-## Free Supplementary Resources (for CFP specifically)
-
-If you happen to be using this repo for CFP prep, these free resources are
-nice complements to the workflow above:
+If you happen to be using this repo for CFP prep, these free resources
+pair nicely with the workflow:
 
 - [Open Exam Prep Podcast](https://open.spotify.com/show/55EmWfdtPaK641q4Rk3mI1)
 - [Open Exam Prep YouTube](https://www.youtube.com/@Open-exam-prep)

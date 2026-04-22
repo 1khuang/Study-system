@@ -16,19 +16,20 @@ something to update.
 ### 1.1 What the learner does
 
 1. Clone or fork this repo.
-2. _(Optional)_ Clear prior content if you don't want it as a reference:
-   ```bash
-   rm -rf progress/*-study-tracker.md sessions/2*
-   ```
-3. Copy the template to the active config:
-   ```bash
-   cp topic-config.template.md topic-config.md
-   ```
-4. Open `topic-config.md` and fill in **Topic Identity**, **Learning Mode**,
-   **Knowledge Domains** (with weights), **Materials**, **Milestones**,
-   **Verification Policy**, and **Personalization**. It's fine to leave
-   weights as estimates — they can be refined later.
-5. Start a chat with the coach and say: **"Initialize the tracker."**
+2. Open it in your coding agent of choice (Claude Code, Codex, opencode,
+   etc.) — the agent will pick up `CLAUDE.md` / `AGENTS.md` automatically.
+3. Start a chat with the coach and say something like:
+   **"I want to study X. Initialize the tracker."**
+
+The coach will notice that `topic-config.md` is in template state and walk
+you through filling in **Topic Identity**, **Learning Mode**, **Knowledge
+Domains** (with weights), **Materials**, **Milestones**, **Verification
+Policy**, and **Personalization**. Weight estimates are fine — they can be
+refined later.
+
+> Prefer to fill it in yourself first? You can also edit `topic-config.md`
+> directly (or `cp topic-config.template.md topic-config.md` if you've
+> already overwritten it) and then ask the coach to initialize.
 
 ### 1.2 What the coach does
 
@@ -116,17 +117,18 @@ Before ending the session, the coach should:
 
 ---
 
-## 3. Migration Note (existing CFP data)
+## 3. Notes on Repo Defaults
 
-This repo originally tracked one topic — the CFP exam. After the refactor,
-the legacy artifacts are kept **as a worked example** of the system in use:
+The repo ships as a clean template:
 
-- `topic-config.md` is pre-filled with the CFP exam config.
-- `progress/cfp-study-tracker.md` is the legacy tracker (kept verbatim so
-  no learning history is lost). New topics should generate a sibling file
-  `progress/<new-short-code>-study-tracker.md` from the template.
-- All historical `/sessions/2025-*` notes are preserved unchanged.
+- `topic-config.md` is a copy of `topic-config.template.md` (placeholders
+  unfilled). The coach treats this as "init mode".
+- `progress/` contains only `STUDY-TRACKER-TEMPLATE.md`. A
+  `progress/<short-code>-study-tracker.md` is generated on first init.
+- `sessions/` contains only `SESSION-TEMPLATE.md`. Per-day folders
+  (`sessions/YYYY-MM-DD/`) are created by the coach as you work.
 
-To start fresh for a new topic, follow §1.1 above and either delete the CFP
-files or keep them as a reference. The coach's behavior is driven entirely
-by `topic-config.md`, so swapping topics is just swapping that one file.
+To switch topics later, just overwrite `topic-config.md` (back it up first
+if you want) and ask the coach to re-initialize. Existing trackers under
+`progress/` are kept and a new sibling tracker is generated for the new
+topic.
