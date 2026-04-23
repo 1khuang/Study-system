@@ -124,4 +124,4 @@ no-op and the coach behaves as the base system.
 
 ---
 
-_Once this file is filled in, ask the coach to **"initialize the tracker"** and it will generate `topics/<short-code>/tracker.md` from this config and point `.active-topic` at this topic._
+_Once this file is filled in, ask the coach to **"initialize the tracker"** and it will generate `topics/<Short Code from §1>/tracker.md` from this config and point `.active-topic` at this topic._
