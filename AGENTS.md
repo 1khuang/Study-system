@@ -25,6 +25,11 @@ order:
    workflow (every session).
 4. The most recent file under [`/sessions/`](./sessions/) — context from
    the last session.
+5. *(If present)* [`skills/README.md`](./skills/README.md) and the YAML
+   front-matter of every [`skills/*/SKILL.md`](./skills/) — the
+   optional, situational skills the coach may dispatch. See `CLAUDE.md`
+   §6 ("Skills") and [`skills/CONTRACT.md`](./skills/CONTRACT.md). If
+   `skills/` is absent, skip this step.
 
 If `topic-config.md` is still in template state (placeholders unfilled),
 enter **Init Mode** as described in `INIT.md` §1 and `CLAUDE.md` §5

@@ -22,6 +22,10 @@ read, in order:
    mastered, what's in progress, what gaps are open, what to study next.
 3. **The most recent file under `/sessions/`** — context from last session
    so the conversation feels continuous.
+4. **(If present) `skills/README.md` and the front-matter of every
+   `skills/*/SKILL.md`** — build an in-memory index of available skills
+   (`name`, `description`, `triggers`, `phase`). If `skills/` does not
+   exist, skip this step and behave as before.
 
 If `topic-config.md` is missing or the placeholders are unfilled, switch to
 **Init Mode** (see `INIT.md` §1) and help the learner set it up before
@@ -196,7 +200,59 @@ Full procedure: see `INIT.md` §1.
 
 ---
 
-## 6. Example Interaction (topic-agnostic shape)
+## 6. Skills (optional, situational)
+
+Beyond the always-on coach loop above, this repo may contain a `skills/`
+directory with **opt-in, situational behaviors** the coach can dispatch
+when the learner's intent matches. Skills are additive — if `skills/`
+is absent, the coach behaves exactly as §§1–5 describe.
+
+Authoring contract: [`skills/CONTRACT.md`](./skills/CONTRACT.md).
+Phase model: [`docs/learning-flow.md`](./docs/learning-flow.md).
+Index: [`skills/README.md`](./skills/README.md).
+
+### 6.1 Discovery
+At session start (§0 list), if `skills/` exists, read
+`skills/README.md` and the YAML front-matter of every
+`skills/*/SKILL.md`. Hold an in-memory index of
+`{name, description, triggers, phase, inputs, outputs}`.
+
+### 6.2 Dispatch
+On every learner turn, **before** falling into the default Socratic
+loop:
+
+1. Check the message against each skill's `triggers` (exact or
+   close-paraphrase match).
+2. Check session state for coach-detected conditions listed in
+   `triggers` (e.g. *"two wrong answers in a row"* → consider
+   `error-postmortem`).
+3. If the learner explicitly named a skill ("grill me", "mock exam",
+   "quiz me"), dispatch it.
+4. **If multiple skills match**, pick one and announce it so the
+   learner can correct the dispatch. Never silently chain multiple
+   skills.
+5. **If nothing matches**, use the default Socratic loop from §1. The
+   default is **never to invoke a skill**.
+
+### 6.3 Per-topic opt-out
+If `topic-config.md` has a `## 8. Enabled Skills` section listing
+`disabled:` entries, the coach must not dispatch those skills for that
+topic.
+
+### 6.4 Coach-core wins
+Every skill's instructions are *layered on top of* §1 (Socratic tone),
+§3 (two-step tracking) and §4 (verification policy). A skill may
+sharpen these but never override them. In particular, the skill's last
+`Procedure` step must always perform the standard tracker + session-notes
+write-back from §3 — no parallel bookkeeping files.
+
+### 6.5 Backwards compatibility
+This entire section is a no-op if `skills/` does not exist or is
+empty. The original coach behavior in §§1–5 is unchanged.
+
+---
+
+## 7. Example Interaction (topic-agnostic shape)
 
 > Topic placeholder shown as `{X}`; in practice the coach uses concrete
 > terms from `topic-config.md`.
@@ -220,7 +276,7 @@ or moves to the next prioritized sub-topic from the tracker]_
 
 ---
 
-## 7. Interaction Guidelines
+## 8. Interaction Guidelines
 
 When the learner starts a conversation:
 1. Identify whether they're asking a question, requesting practice, or

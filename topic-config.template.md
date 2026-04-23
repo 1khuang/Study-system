@@ -89,6 +89,34 @@
 - **Known Weak Areas**: <!-- topics you struggle with or want extra time on -->
 - **Learning Preferences**: <!-- e.g. "lots of analogies", "show me the math", "always give a worked example" -->
 
+## 8. Enabled Skills (optional)
+
+> Skills are **opt-in, situational** behaviors defined in `skills/`.
+> The coach dispatches them when the learner's intent matches a skill's
+> trigger. See [`skills/README.md`](./skills/README.md) for the full
+> list and [`skills/CONTRACT.md`](./skills/CONTRACT.md) for how dispatch
+> works.
+>
+> By default, **all skills under `skills/` are enabled**. Use the
+> `disabled:` list below to opt specific skills out for this topic.
+> Examples:
+> - A language-acquisition topic typically disables `mock-exam`.
+> - A loose concept-mastery topic may disable `confidence-calibration`.
+> - A short ad-hoc topic may disable `schedule-spaced-reviews`.
+
+```yaml
+skills:
+  disabled:
+    # - mock-exam
+    # - schedule-spaced-reviews
+  # Optional: a friendlier label or extra notes per enabled skill
+  notes:
+    # retrieval-quiz: prefer 5 items per pass
+```
+
+If you remove the entire `skills/` directory, this section becomes a
+no-op and the coach behaves as the base system.
+
 ---
 
 _Once this file is filled in, ask the coach to **"initialize the tracker"** and it will generate `progress/<short-code>-study-tracker.md` from this config._
