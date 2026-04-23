@@ -48,6 +48,13 @@ template state, enter **Init Mode** as described in `INIT.md` §1 and
 **legacy single-topic layout** (root `topic-config.md` filled in, no
 `topics/` directory), use the legacy paths per `CLAUDE.md` §9.7.
 
+### Session Naming
+
+At the start of every session, set the Claude Code / Codex **session name**
+(UI title) to `YYYY-MM-DD-<short-code>`. If multiple topics are visited,
+include up to the first three short-codes separated by `+`
+(e.g. `2026-04-23-cfp+aws-saa+linalg`). Full rule in `CLAUDE.md §0.2`.
+
 ---
 
 ## Compatibility with `/init`

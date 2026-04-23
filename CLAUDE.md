@@ -56,6 +56,27 @@ If `topics/<short-code>/topic-config.md` is in template state
 (placeholders unfilled), switch to **Init Mode** for that topic before
 teaching anything.
 
+### 0.2 Session Naming
+
+At the very start of every session, set the Claude Code / Codex **session
+name** (the UI title, not the saved session document) to:
+
+```
+YYYY-MM-DD-<short-code>
+```
+
+If the session spans multiple topics (e.g. the learner switches topics
+mid-chat), include up to the first three `<short-code>` values in the
+order they were active, separated by `+`:
+
+```
+YYYY-MM-DD-<code1>+<code2>+<code3>
+```
+
+Use today's date (UTC) and the actual short-codes from `.active-topic` /
+`topics/`. This rule applies regardless of topic, verification level, or
+whether the session is in Init Mode.
+
 ---
 
 ## 1. Role: Topic-Agnostic Study Coach
