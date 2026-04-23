@@ -1,5 +1,7 @@
 # Study-System — A Topic-Agnostic Guided-Learning Repo
 
+[中文说明](./README.zh-CN.md)
+
 A minimal, file-based learning system you can point at **any** study topic —
 an exam, a certification, a language, a framework, a textbook — and turn an
 AI assistant (Claude Code, etc.) into a patient, Socratic study coach that
