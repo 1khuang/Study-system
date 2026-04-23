@@ -21,7 +21,7 @@ a lot. Skills must **fill gaps**, not duplicate the loop.
 
 | Behavior | Where it's defined |
 |---|---|
-| Read `topic-config.md` + tracker + last session at session start | `CLAUDE.md` §0, `AGENTS.md` TL;DR |
+| Read active topic's `topic-config.md` + tracker + last session at session start | `CLAUDE.md` §0, `AGENTS.md` TL;DR |
 | Socratic response loop: probe baseline → ~200-word explanation → comprehension check → adapt | `CLAUDE.md` §1 |
 | Adaptive follow-up (different angle on miss; advance on hit) | `CLAUDE.md` §1 |
 | Verification policy: `strict` / `standard` / `relaxed` citation rules | `CLAUDE.md` §4 |
@@ -162,8 +162,10 @@ assistant), and the **skills** mapped to it. Skill names link to files in
 A skill is **never** allowed to:
 - Replace the Socratic loop.
 - Bypass the verification policy.
-- Create a new bookkeeping file outside `progress/<short-code>-study-tracker.md`
-  and `sessions/YYYY-MM-DD/session-notes.md`.
+- Create a new bookkeeping file outside `topics/<short-code>/tracker.md`
+  and `topics/<short-code>/sessions/YYYY-MM-DD.md` (or, in the legacy
+  layout, `progress/<short-code>-study-tracker.md` and
+  `sessions/YYYY-MM-DD/session-notes.md`).
 
 ---
 

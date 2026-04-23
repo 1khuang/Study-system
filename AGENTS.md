@@ -18,22 +18,35 @@ Before responding to the learner's first message in a session, read, in
 order:
 
 1. [`CLAUDE.md`](./CLAUDE.md) — full coach behavior, response loop,
-   verification policy, two-step tracking protocol.
-2. [`topic-config.md`](./topic-config.md) — what the learner is studying,
-   domain weights, materials, verification level, personalization.
-3. [`INIT.md`](./INIT.md) — init workflow (one-time) and daily-update
-   workflow (every session).
-4. The most recent file under [`/sessions/`](./sessions/) — context from
-   the last session.
-5. *(If present)* [`skills/README.md`](./skills/README.md) and the YAML
+   verification policy, two-step tracking protocol, multi-topic rules.
+2. **`.active-topic`** (repo root) — single-line pointer to the
+   `<short-code>` of the topic this chat defaults to. If missing or
+   invalid, follow `CLAUDE.md` §0.1 to resolve.
+3. [`topics/<short-code>/topic-config.md`](./topics/) — what the
+   learner is studying for the active topic: domain weights, materials,
+   verification level, personalization.
+4. [`topics/<short-code>/tracker.md`](./topics/) — overall state for
+   the active topic, including its **Cross-topic Links** section.
+5. The most recent file under
+   [`topics/<short-code>/sessions/`](./topics/) — context from the
+   previous session **of the active topic**. Do not pre-load other
+   topics' sessions.
+6. [`crosslinks/INDEX.md`](./crosslinks/INDEX.md) (if present) — quick
+   scan of cross-topic insights so they can be referenced when
+   relevant.
+7. [`INIT.md`](./INIT.md) — add-a-topic workflow (one-time per topic)
+   and daily-update workflow (every session).
+8. *(If present)* [`skills/README.md`](./skills/README.md) and the YAML
    front-matter of every [`skills/*/SKILL.md`](./skills/) — the
    optional, situational skills the coach may dispatch. See `CLAUDE.md`
    §6 ("Skills") and [`skills/CONTRACT.md`](./skills/CONTRACT.md). If
    `skills/` is absent, skip this step.
 
-If `topic-config.md` is still in template state (placeholders unfilled),
-enter **Init Mode** as described in `INIT.md` §1 and `CLAUDE.md` §5
-before teaching anything.
+If `topics/` is empty, or the active topic's `topic-config.md` is in
+template state, enter **Init Mode** as described in `INIT.md` §1 and
+`CLAUDE.md` §5 before teaching anything. If the repo is in the
+**legacy single-topic layout** (root `topic-config.md` filled in, no
+`topics/` directory), use the legacy paths per `CLAUDE.md` §9.7.
 
 ---
 

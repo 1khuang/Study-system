@@ -4,8 +4,13 @@
 > The coach reads this file at the start of every session and uses it to
 > generate the progress tracker, prioritize topics, and tailor explanations.
 >
-> Copy this file to `topic-config.md` (in the repo root) and fill it in.
-> You can re-init at any time by editing this file — the coach will adapt.
+> Copy this file to `topics/<short-code>/topic-config.md` and fill it in.
+> (The `<short-code>` is the slug you set in §1 below.) You can re-init at
+> any time by editing this file — the coach will adapt.
+>
+> A legacy single-topic layout where `topic-config.md` lives in the repo
+> root is still recognized for backwards compatibility; see
+> [`INIT.md`](./INIT.md) §3.
 
 ---
 
@@ -119,4 +124,4 @@ no-op and the coach behaves as the base system.
 
 ---
 
-_Once this file is filled in, ask the coach to **"initialize the tracker"** and it will generate `progress/<short-code>-study-tracker.md` from this config._
+_Once this file is filled in, ask the coach to **"initialize the tracker"** and it will generate `topics/<short-code>/tracker.md` from this config and point `.active-topic` at this topic._

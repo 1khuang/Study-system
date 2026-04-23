@@ -102,9 +102,12 @@ One short paragraph. How this skill behaves under each of `strict`,
 
 ## Tracker write-back
 The exact updates this skill makes to:
-- `sessions/YYYY-MM-DD/session-notes.md` (which sections it appends to)
-- `progress/<short-code>-study-tracker.md` (mastered / gaps / next-step
-  plan / spaced-review queue)
+- `topics/<short-code>/sessions/YYYY-MM-DD.md` (which sections it
+  appends to) — or, in the legacy single-topic layout,
+  `sessions/YYYY-MM-DD/session-notes.md`.
+- `topics/<short-code>/tracker.md` (mastered / gaps / next-step plan /
+  spaced-review queue / Cross-topic Links) — or, in the legacy
+  layout, `progress/<short-code>-study-tracker.md`.
 This is the part that prevents skills from becoming a parallel system.
 
 ## Example
@@ -125,9 +128,13 @@ Optional sections (add only if they meaningfully help):
 These are non-negotiable — they preserve the system's invariants.
 
 1. **Single source of truth.** A skill must not create new files outside
-   of `sessions/YYYY-MM-DD/session-notes.md` and
-   `progress/<short-code>-study-tracker.md`. Optional bundled prompts
-   under `skills/<name>/resources/` are fine *as inputs*, but never as
+   of `topics/<short-code>/sessions/YYYY-MM-DD.md` and
+   `topics/<short-code>/tracker.md` (or their legacy equivalents
+   `sessions/YYYY-MM-DD/session-notes.md` and
+   `progress/<short-code>-study-tracker.md`). The one allowed
+   cross-topic exception is creating a file under `crosslinks/` per
+   `CLAUDE.md` §9.4. Optional bundled prompts under
+   `skills/<name>/resources/` are fine *as inputs*, but never as
    running state.
 2. **Coach-core wins.** Verification policy, Socratic tone, and the
    two-step tracking protocol from `CLAUDE.md` always apply. A skill may
