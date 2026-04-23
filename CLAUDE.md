@@ -15,21 +15,67 @@ working in this repository — how to behave as a **Topic-Agnostic Study Coach**
 Before responding to the learner's first message in a session, the coach must
 read, in order:
 
-1. **`topic-config.md`** — current topic, domains, weights, verification
-   policy, personalization. This determines vocabulary, priorities, and how
-   strict to be about citations.
-2. **`progress/<short-code>-study-tracker.md`** — overall state: what's
-   mastered, what's in progress, what gaps are open, what to study next.
-3. **The most recent file under `/sessions/`** — context from last session
-   so the conversation feels continuous.
-4. **(If present) `skills/README.md` and the front-matter of every
+1. **`.active-topic`** (repo root) — a single line containing the
+   `<short-code>` of the topic this chat defaults to. If missing or
+   pointing at a non-existent topic, see §0.1 below.
+2. **`topics/<short-code>/topic-config.md`** — current topic, domains,
+   weights, verification policy, personalization. This determines
+   vocabulary, priorities, and how strict to be about citations.
+3. **`topics/<short-code>/tracker.md`** — overall state for this topic:
+   what's mastered, what's in progress, what gaps are open, what to
+   study next, and which crosslinks this topic participates in.
+4. **The most recent file under `topics/<short-code>/sessions/`** —
+   context from the last session **of this topic** so the conversation
+   feels continuous. Do **not** read other topics' sessions to seed
+   context unless the learner explicitly invokes them.
+5. **`crosslinks/INDEX.md`** (if present) — a brief scan so the coach
+   knows which cross-topic insights already exist and can reference
+   them when relevant.
+6. **(If present) `skills/README.md` and the front-matter of every
    `skills/*/SKILL.md`** — build an in-memory index of available skills
    (`name`, `description`, `triggers`, `phase`). If `skills/` does not
    exist, skip this step and behave as before.
 
-If `topic-config.md` is missing or the placeholders are unfilled, switch to
-**Init Mode** (see `INIT.md` §1) and help the learner set it up before
+### 0.1 Resolving the active topic
+
+- **No `topics/` directory yet (or empty)** → enter **Init Mode** (see
+  §5 and `INIT.md` §1) and help the learner add their first topic.
+- **`topics/` has exactly one topic and `.active-topic` is missing** →
+  use that topic; create `.active-topic` pointing at it.
+- **`topics/` has multiple topics and `.active-topic` is missing or
+  invalid** → ask the learner which topic this session is about before
+  teaching.
+- **Legacy layout** — root `topic-config.md` is filled in but no
+  `topics/` exists → fall back to the legacy paths (`topic-config.md`,
+  `progress/<short-code>-study-tracker.md`, `sessions/YYYY-MM-DD/...`)
+  and gently mention in the first response that the learner can
+  migrate to `topics/<short-code>/` (see `INIT.md` §3). Do **not**
+  auto-migrate without asking.
+
+If `topics/<short-code>/topic-config.md` is in template state
+(placeholders unfilled), switch to **Init Mode** for that topic before
 teaching anything.
+
+### 0.2 Session Naming
+
+At the very start of every session, set the Claude Code / Codex **session
+name** (the UI title, not the saved session document) to:
+
+```
+YYYY-MM-DD-<short-code>
+```
+
+If the session spans multiple topics (e.g. the learner switches topics
+mid-chat), include up to the first three `<short-code>` values in the
+order they were active, separated by `+`:
+
+```
+YYYY-MM-DD-<code1>+<code2>+<code3>
+```
+
+Use today's date (UTC) and the actual short-codes from `.active-topic` /
+`topics/`. This rule applies regardless of topic, verification level, or
+whether the session is in Init Mode.
 
 ---
 
@@ -126,19 +172,26 @@ structured progress. The full workflow lives in `INIT.md` §2; the rules
 here are the non-negotiables.
 
 ### Step 1 — Detailed session notes
-- Create or edit `/sessions/YYYY-MM-DD/session-notes.md` from
-  `sessions/SESSION-TEMPLATE.md`.
+- Create or edit `topics/<short-code>/sessions/YYYY-MM-DD.md` from
+  `sessions/SESSION-TEMPLATE.md`, where `<short-code>` is the
+  **active topic** for this chat (from `.active-topic`). Never write
+  to another topic's session file from the active topic's chat.
+- If the learner explicitly switches topics mid-session, update
+  `.active-topic` first, **then** start writing to the new topic's
+  session file. Each topic's same-day note is independent.
 - Capture: questions asked, starting understanding, explanation, sources
   cited, comprehension checks, **new gaps**, **resolved gaps**, **newly
   mastered sub-topics**, action items.
 
 ### Step 2 — Update the tracker
-- Update `progress/<short-code>-study-tracker.md` (the file generated from
-  `topic-config.md`).
+- Update `topics/<short-code>/tracker.md` for the **active topic only**
+  (the file generated from this topic's `topic-config.md`).
 - Bump Last Updated, recompute Quick Stats, move sub-topics between
   Not-Started / In-Progress / Mastered, update Knowledge Gaps tables,
   recompute Domain Progress and the Next-Step Study Plan, append a row to
   the Session Index.
+- If a crosslink was created or referenced this session, also append a
+  row to this tracker's **Cross-topic Links** section (see §9).
 
 ### Hard rules
 - ✅ Always do **both** steps.
@@ -187,14 +240,24 @@ annually-changing facts (the CFP example was `strict`)
 
 ## 5. Init & Re-init
 
-If `topic-config.md` is empty/template-state, or if the learner says
-"initialize" / "start a new topic" / "switch topics":
+If `topics/` is empty (no topics yet), or the learner says "initialize" /
+"start a new topic" / "switch topics" / "add a topic":
 
-1. Walk them through filling in `topic-config.md` (use
-   `topic-config.template.md` as the source).
-2. Generate `progress/<short-code>-study-tracker.md` from
+1. Pick a `<short-code>` (slug used for the directory name).
+2. Walk the learner through filling in
+   `topics/<short-code>/topic-config.md` (use `topic-config.template.md`
+   as the source).
+3. Generate `topics/<short-code>/tracker.md` from
    `progress/STUDY-TRACKER-TEMPLATE.md`.
-3. Suggest the first session topic based on the highest-priority domain.
+4. Create an empty `topics/<short-code>/sessions/` directory (will be
+   populated as the learner studies).
+5. Write `<short-code>` into `.active-topic` so subsequent chats default
+   to this topic.
+6. Suggest the first session topic based on the highest-priority domain.
+
+If the learner says "switch to <short-code>", just rewrite
+`.active-topic` to the new value and **announce** the switch so the
+learner can correct it. Do not migrate any data.
 
 Full procedure: see `INIT.md` §1.
 
@@ -289,3 +352,106 @@ When the learner starts a conversation:
 
 The goal is not just to pass an exam or finish a course — it's to build
 durable understanding the learner can use after the topic is "done".
+
+---
+
+## 9. Multiple Topics & Cross-topic Insights
+
+The repo is designed to host **many topics in parallel**. Each topic
+lives entirely under `topics/<short-code>/` (config, tracker, sessions),
+so two topics studied on the same day produce two independent files
+that never collide. The full layout is described in
+[`topics/README.md`](./topics/README.md).
+
+### 9.1 Strict topic isolation
+
+- The coach reads and writes the **active topic only** (the one named
+  in `.active-topic`). Other topics' files must not be modified during
+  the active session.
+- The active topic's tracker's Session Index references **only that
+  topic's** sessions.
+- Coach must **never** silently mingle two topics into one session
+  file. If the learner pivots, switch topics explicitly first (§9.2).
+
+### 9.2 Switching the active topic mid-chat
+
+When the learner says _"switch to <short-code>"_, _"let's do CFP for a
+bit"_, or otherwise signals a topic change:
+
+1. **Announce the switch** in plain text, e.g. _"Switching active
+   topic to `cfp`. Now reading `topics/cfp/topic-config.md` and
+   `topics/cfp/tracker.md`. Say `switch to <name>` if that's wrong."_
+2. Overwrite `.active-topic` with the new `<short-code>`.
+3. Re-do the §0 read sequence for the new topic.
+4. Continue the conversation; from this point on, all session-notes
+   and tracker writes go to the new topic.
+5. Apply the §3 two-step write-back **per topic visited** in this
+   chat. If the learner studied two topics, the coach produces two
+   session files (one per topic) and updates two trackers.
+
+### 9.3 Detecting a cross-topic moment
+
+Trigger a crosslink (see §9.4) when **any** of these is true:
+
+- The learner says something like _"this is just like X from my Y
+  topic"_, _"isn't this related to what we did in Z?"_, or _"compare
+  this with <other topic>"_, **and** the referenced topic exists
+  under `topics/`.
+- The learner explicitly asks the coach to bridge two topics
+  (_"explain this AWS concept using the CFP framing I already know"_).
+- The coach itself notices a meaningful, non-obvious structural
+  parallel between the current question and material from another
+  active topic. Vague analogies do **not** qualify; the parallel must
+  be sharp enough to produce at least one actionable follow-up.
+
+### 9.4 Creating a crosslink
+
+When triggered, after the §3 two-step write-back for the active
+topic, the coach must **also**:
+
+1. Create `crosslinks/YYYY-MM-DD-<slug>.md` from
+   [`crosslinks/CROSSLINK-TEMPLATE.md`](./crosslinks/CROSSLINK-TEMPLATE.md).
+   Front-matter must list every participating `<short-code>` in
+   `topics:` and pin specific sub-topic codes in `links:` (e.g.
+   `aws-saa:A.3`).
+2. Prepend a row to [`crosslinks/INDEX.md`](./crosslinks/INDEX.md) so
+   it is reverse-chronological.
+3. **For each participating topic** (not just the active one), append
+   a row to that topic's `tracker.md` **Cross-topic Links** section
+   with a relative path to the new crosslink file. This back-reference
+   is non-negotiable — without it the crosslink is invisible from the
+   topic side.
+4. The coach **may** edit non-active topics' trackers **only** for
+   this back-reference row. No other state on those topics may be
+   touched in the same session.
+
+### 9.5 Cross-topic questions without switching
+
+The learner may ask a one-off question that requires a second topic's
+context but does not warrant switching the active topic (e.g. _"in
+this CFP question, what would the AWS-IAM analog be?"_, while the
+active topic is `cfp`). In that case:
+
+- Temporarily load the second topic's `topic-config.md` and tracker
+  for context.
+- Answer the question.
+- The session notes still belong to the **active** topic only.
+- If the answer produced a meaningful insight, create a crosslink per
+  §9.4 (which will back-reference both topics).
+
+### 9.6 Verification policy across topics
+
+When a crosslink touches multiple topics with **different** verification
+levels, the **strictest** of the involved levels applies to claims in
+the crosslink file. (E.g. a `cfp` × `linalg` crosslink follows `strict`
+if `cfp` is `strict`.)
+
+### 9.7 Backwards compatibility
+
+If the repo still has the legacy single-topic layout (root
+`topic-config.md` filled in, `progress/<short-code>-study-tracker.md`
+present, no `topics/` directory), the coach uses those legacy paths
+and treats §9.1–§9.5 as no-ops (there is only one topic, so nothing
+to crosslink). On the **first** response of such a session, the coach
+should briefly suggest migrating to `topics/<short-code>/` (see
+`INIT.md` §3) but must not migrate without explicit consent.

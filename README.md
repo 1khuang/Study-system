@@ -22,34 +22,65 @@ For any topic you choose, the coach will:
 
 - 🧠 **Teach Socratically** — ask what you know first, then explain in
   ~200-word chunks, then check understanding before moving on.
-- 📒 **Log every session** — one detailed `session-notes.md` per study day.
-- 📈 **Maintain a single tracker** — `progress/<topic>-study-tracker.md` is
-  the always-current source of truth for mastered sub-topics, open
+- 📒 **Log every session** — one detailed
+  `topics/<topic>/sessions/YYYY-MM-DD.md` per study day, per topic.
+- 📈 **Maintain a single tracker per topic** — `topics/<topic>/tracker.md`
+  is the always-current source of truth for mastered sub-topics, open
   knowledge gaps, and what to study next.
 - 🎯 **Re-prioritize automatically** — domain weights × coverage × open gaps
   → the next-step study plan after every session.
 - 🔍 **Cite or admit uncertainty** — strictness is configurable per topic
   (strict / standard / relaxed).
+- 🔀 **Run multiple topics in parallel** — every topic has its own home
+  under `topics/<short-code>/`, so studying CFP in the morning and AWS
+  in the afternoon produces two clean files, not one tangled one.
+- 🔗 **Capture cross-topic insights** — when two topics suddenly
+  connect, the coach records that as a first-class file under
+  `crosslinks/`, back-referenced from each topic's tracker.
 
 ---
 
 ## Repo Layout
 
 ```
-topic-config.md              ← what you are studying (blank template; you fill this in)
-topic-config.template.md     ← reference copy of the same template
-INIT.md                      ← the init + daily-update workflows
-CLAUDE.md                    ← coach behavior (Socratic, two-step tracking)
-AGENTS.md                    ← same instructions for Codex / opencode / other agents
+.active-topic                  ← single line: <short-code> of the topic
+                                 the coach defaults to in this chat
+                                 (created on first init)
+
+topic-config.template.md       ← reference template; copy it to
+                                 topics/<short-code>/topic-config.md
+                                 for each new topic
+topic-config.md                ← legacy single-topic placeholder
+                                 (kept for backwards compatibility)
+
+INIT.md                        ← add-a-topic + daily-update workflows
+CLAUDE.md                      ← coach behavior (Socratic, two-step
+                                 tracking, multi-topic, crosslinks)
+AGENTS.md                      ← same instructions for Codex / opencode
+                                 / other agents
+
+topics/                        ← one home per topic
+  README.md                    ← explains the per-topic layout
+  <short-code>/                ← e.g. cfp/, aws-saa/, linalg/
+    topic-config.md            ← what this topic is
+    tracker.md                 ← progress for this topic
+    sessions/
+      YYYY-MM-DD.md            ← one note file per study day, per topic
+
+crosslinks/                    ← cross-topic insights
+  README.md
+  INDEX.md                     ← reverse-chronological index
+  CROSSLINK-TEMPLATE.md
+  YYYY-MM-DD-<slug>.md         ← one file per insight (created on demand)
 
 progress/
-  STUDY-TRACKER-TEMPLATE.md  ← generic tracker template (the coach generates
-                               progress/<short-code>-study-tracker.md from this)
+  STUDY-TRACKER-TEMPLATE.md    ← generic tracker template (the coach
+                                 generates each topic's tracker.md from
+                                 this)
 
 sessions/
-  SESSION-TEMPLATE.md        ← generic per-session note template
-  YYYY-MM-DD/                ← one folder per study day (created by the coach)
-    session-notes.md
+  SESSION-TEMPLATE.md          ← generic per-session note template
+                                 (each topic's daily note is a copy)
 ```
 
 ---
@@ -59,21 +90,23 @@ sessions/
 1. **Clone** this repo (or use it as a template).
 2. **Open it in your coding agent of choice** — Claude Code, Codex, opencode,
    etc. — and just start chatting. Say something like:
-   > "I want to study X. Initialize the tracker."
+   > "I want to study X. Add it as a new topic."
 
-   The coach reads `CLAUDE.md` (or `AGENTS.md`), notices that
-   `topic-config.md` is still in template state, and walks you through
-   filling it in (topic name, target date, domains + weights, materials,
+   The coach reads `CLAUDE.md` (or `AGENTS.md`), notices that `topics/`
+   is empty, picks a `<short-code>` (or asks you for one), and walks
+   you through filling in `topics/<short-code>/topic-config.md`
+   (topic name, target date, domains + weights, materials,
    verification level, personalization). It then generates
-   `progress/<short-code>-study-tracker.md` from the template and proposes
-   the first study session based on the highest-weight, lowest-coverage
-   domain.
+   `topics/<short-code>/tracker.md` from the template, sets
+   `.active-topic` to the new short-code, and proposes the first
+   study session based on the highest-weight, lowest-coverage domain.
 3. **Just keep asking questions.** After each session, the coach writes a
-   session-notes file under `/sessions/YYYY-MM-DD/` and updates the tracker
-   — no manual bookkeeping required.
+   session-notes file at `topics/<short-code>/sessions/YYYY-MM-DD.md`
+   and updates that topic's tracker — no manual bookkeeping required.
 
-> **Tip:** You can also fill in `topic-config.md` by hand first and then
-> ask the coach to "initialize the tracker" — both flows work.
+> **Tip:** You can also fill in `topics/<short-code>/topic-config.md`
+> by hand first (copy from `topic-config.template.md`) and then ask
+> the coach to "initialize the tracker" — both flows work.
 
 ### Compatibility with `/init`
 
@@ -94,31 +127,95 @@ Full step-by-step is in [`INIT.md`](./INIT.md).
 
 | When | What you do | What the coach does |
 |------|-------------|---------------------|
-| Start of session | Ask a question, request practice, or say "what should I study today?" | Reads `topic-config.md`, the tracker, and the latest session notes for context |
+| Start of session | Ask a question, request practice, or say "what should I study today?" | Reads `.active-topic`, then that topic's `topic-config.md`, `tracker.md`, and most recent session notes for context |
 | During | Answer comprehension checks honestly — including "I don't know" | Teaches Socratically; cites sources at the strictness level your config requires |
-| End of session | Nothing — just stop | Writes today's `session-notes.md`, updates the tracker (mastered / gaps / next steps) |
+| Switch topic mid-chat | Say "switch to <short-code>" | Rewrites `.active-topic`, announces the switch, re-loads the new topic |
+| End of session | Nothing — just stop | Writes today's `topics/<short-code>/sessions/YYYY-MM-DD.md`, updates that topic's tracker (mastered / gaps / next steps), and creates a `crosslinks/` file if the session produced a cross-topic insight |
 
 Common things to ask between sessions:
 - "What should I focus on today?"
 - "Quiz me on my weak areas."
 - "Show me my progress."
 - "Re-prioritize based on my exam date."
+- "Switch to <other-topic>."
+- "Add a new topic: <name>."
+- "Show me all my crosslinks."
 
 ---
 
-## Switching Topics
+## Multiple Topics & Cross-topic Insights
 
-Because all behavior is driven by `topic-config.md`, switching topics is
-just swapping that one file:
+This repo is designed to host **many topics in parallel** — an exam,
+a side framework, a language, all under the same git history. Two
+mechanisms make that work:
 
-```bash
-cp topic-config.md topic-config.<old-topic>.bak.md   # save the old config
-cp topic-config.template.md topic-config.md          # blank it out
-# fill in your new topic, then ask the coach to "initialize the tracker"
+### Per-topic homes
+
+Each topic lives entirely under `topics/<short-code>/`:
+
+```
+topics/cfp/topic-config.md
+topics/cfp/tracker.md
+topics/cfp/sessions/2026-04-23.md
+
+topics/aws-saa/topic-config.md
+topics/aws-saa/tracker.md
+topics/aws-saa/sessions/2026-04-23.md
 ```
 
-A new `progress/<new-short-code>-study-tracker.md` is generated; any
-previous tracker stays in `progress/` as historical reference.
+Studying two topics on the same day produces two independent files —
+no collisions, no mingled trackers. The repo-root file `.active-topic`
+holds a single line (the active topic's `<short-code>`) so the coach
+knows which topic each chat defaults to. Switching is one sentence:
+_"switch to aws-saa"_ rewrites `.active-topic` and the coach announces
+the switch.
+
+### Crosslinks
+
+When two topics suddenly connect ("oh, this AWS IAM idea is the same
+shape as that CFP trust-permissions concept"), the coach records the
+moment as a first-class file under `crosslinks/`:
+
+- `crosslinks/INDEX.md` — reverse-chronological global index
+- `crosslinks/YYYY-MM-DD-<slug>.md` — one file per insight, with
+  YAML front-matter pinning every participating `topics:` and
+  sub-topic `links:`
+- Each participating topic's `tracker.md` gets a back-reference row
+  in its **Cross-topic Links** section, so the insight is reachable
+  from either side.
+
+Full coach behavior is in [`CLAUDE.md`](./CLAUDE.md) §9; file
+conventions are in [`crosslinks/README.md`](./crosslinks/README.md).
+
+---
+
+## Switching or Adding Topics
+
+To add another topic at any time, just say in chat:
+
+> "Add a new topic: <name>."
+
+The coach picks (or asks for) a `<short-code>`, creates
+`topics/<short-code>/`, walks you through `topic-config.md`, generates
+the tracker, and updates `.active-topic`.
+
+To switch which topic the next message defaults to:
+
+> "Switch to <short-code>."
+
+To remove a topic, just `git rm -r topics/<short-code>/` and (if it was
+active) update `.active-topic`. Nothing else has to change; other
+topics and the global `crosslinks/INDEX.md` survive untouched
+(crosslink files that referenced the deleted topic remain as historical
+artifacts; you may prune them if desired).
+
+### Legacy single-topic repos
+
+Repos that started before the multi-topic layout existed kept their
+config at `topic-config.md` in the repo root and their tracker at
+`progress/<short-code>-study-tracker.md`. That layout still works —
+the coach detects it automatically and uses it. To migrate, see
+[`INIT.md`](./INIT.md) §3.
 
 ---
 

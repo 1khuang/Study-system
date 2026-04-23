@@ -1,11 +1,17 @@
 # {{Topic Name}} — Study Tracker
 
-> Generated from `topic-config.md`. This is the **single source of truth** for
-> overall progress on this topic. The AI study coach updates it after every
-> session: domain progress, mastered sub-topics, knowledge gaps, and the
-> next-step study plan.
+> Generated from this topic's `topic-config.md`. This is the **single source
+> of truth** for overall progress on this topic. The AI study coach updates
+> it after every session: domain progress, mastered sub-topics, knowledge
+> gaps, and the next-step study plan.
 >
-> Detailed per-session records live in `/sessions/YYYY-MM-DD/session-notes.md`.
+> Detailed per-session records live in
+> `topics/<short-code>/sessions/YYYY-MM-DD.md` (one file per study day, per
+> topic — never shared with other topics).
+>
+> Cross-topic insights this topic participates in are listed in the
+> **Cross-topic Links** section near the bottom and back-linked from the
+> global [`crosslinks/INDEX.md`](../../crosslinks/INDEX.md).
 
 - **Last Updated**: {{YYYY-MM-DD}}
 - **Topic**: {{Topic Name}}  ({{short-code}})
@@ -111,4 +117,18 @@
 
 | Date | Notes | Main Topics | New Mastered | New / Resolved Gaps |
 |------|-------|-------------|--------------|---------------------|
-| {{YYYY-MM-DD}} | [link](../sessions/{{YYYY-MM-DD}}/session-notes.md) |  |  |  |
+| {{YYYY-MM-DD}} | [link](./sessions/{{YYYY-MM-DD}}.md) |  |  |  |
+
+---
+
+## Cross-topic Links
+
+> Crosslinks this topic participates in. The coach appends a row whenever a
+> new file is created under [`crosslinks/`](../../crosslinks/) that
+> references this topic. Entries here mirror the global
+> [`crosslinks/INDEX.md`](../../crosslinks/INDEX.md) but filtered to this
+> topic only, so you can navigate from either side.
+
+| Date | Insight | Other Topic(s) | This Topic's Sub-topic(s) | File |
+|------|---------|----------------|---------------------------|------|
+| _none yet_ |  |  |  |  |

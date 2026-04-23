@@ -1,8 +1,13 @@
 # Session Notes — {{YYYY-MM-DD}}
 
+> Copy this template to `topics/<short-code>/sessions/{{YYYY-MM-DD}}.md`
+> (one file per study day, **per topic**). If the same day's file already
+> exists, **edit** it — never overwrite. Cross-topic insights belong in
+> [`crosslinks/`](../crosslinks/), not in this file.
+
 ## Session Overview
 - **Date**: {{YYYY-MM-DD}}
-- **Topic**: {{Topic Name from topic-config.md}}
+- **Topic**: {{Topic Name from topics/<short-code>/topic-config.md}}
 - **Duration**: {{e.g. ~45 min}}
 - **Format**: {{e.g. Q&A / worked examples / quiz / spaced review}}
 - **Main Focus**: {{1–2 lines on what this session was about}}
@@ -14,7 +19,7 @@
 
 **Learner Request**: {{What the learner asked for at the start}}
 
-**Linked Domains / Sub-topics** (from `topic-config.md`):
+**Linked Domains / Sub-topics** (from `topics/<short-code>/topic-config.md`):
 - {{e.g. B.10 Financing strategies and debt management}}
 - {{e.g. F.51 Distribution rules and taxation}}
 
