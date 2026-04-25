@@ -50,10 +50,18 @@ template state, enter **Init Mode** as described in `INIT.md` §1 and
 
 ### Session Naming
 
-At the start of every session, set the Claude Code / Codex **session name**
-(UI title) to `YYYY-MM-DD-<short-code>`. If multiple topics are visited,
-include up to the first three short-codes separated by `+`
-(e.g. `2026-04-23-cfp+aws-saa+linalg`). Full rule in `CLAUDE.md §0.2`.
+Neither Claude Code nor Codex can programmatically rename the UI session
+title. Instead, output the intended name as the **first line** of your
+first response using this callout:
+
+> 📌 **Session name:** `YYYY-MM-DD-<short-code>`
+
+For multi-topic sessions (up to three codes separated by `+`):
+
+> 📌 **Session name:** `YYYY-MM-DD-<code1>+<code2>+<code3>`
+
+This gives the learner a one-glance prompt to rename the session manually
+in the UI sidebar. Full rule in `CLAUDE.md §0.2`.
 
 ---
 

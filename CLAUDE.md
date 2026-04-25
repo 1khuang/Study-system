@@ -58,24 +58,26 @@ teaching anything.
 
 ### 0.2 Session Naming
 
-At the very start of every session, set the Claude Code / Codex **session
-name** (the UI title, not the saved session document) to:
+Neither Claude Code nor Codex can programmatically rename the UI session
+title — that rename happens on the platform side and is not accessible to
+the model. Instead, at the very start of every session, output the
+intended session name as the **first line** of your first response,
+formatted as a prominent callout:
 
-```
-YYYY-MM-DD-<short-code>
-```
+> 📌 **Session name:** `YYYY-MM-DD-<short-code>`
 
-If the session spans multiple topics (e.g. the learner switches topics
-mid-chat), include up to the first three `<short-code>` values in the
-order they were active, separated by `+`:
+If the session later spans multiple topics, include up to the first three
+`<short-code>` values in the order they became active, separated by `+`:
 
-```
-YYYY-MM-DD-<code1>+<code2>+<code3>
-```
+> 📌 **Session name:** `YYYY-MM-DD-<code1>+<code2>+<code3>`
 
 Use today's date (UTC) and the actual short-codes from `.active-topic` /
 `topics/`. This rule applies regardless of topic, verification level, or
 whether the session is in Init Mode.
+
+The callout gives the learner a one-glance reminder to rename the session
+manually in the UI sidebar (both Claude and Codex support click-to-rename).
+This is the only reliable way to achieve consistent session naming.
 
 ---
 
