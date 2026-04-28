@@ -56,9 +56,16 @@ tracker exists), the coach must:
    - A first-pass Next-Step Study Plan that prioritizes high-weight,
      zero-coverage domains.
 4. Make sure `topics/<short-code>/sessions/` exists.
-5. Set `.active-topic` (in the repo root) to the new `<short-code>` so
+5. Make sure `topics/<short-code>/notes/` exists. For each domain in
+   `topic-config.md` §3, create one seed chapter file
+   `<domain-code>-<slug>.md` from
+   [`notes/NOTES-TEMPLATE.md`](./notes/NOTES-TEMPLATE.md) with the
+   header filled in and one section per sub-topic, each marked
+   `_No notes captured yet._`. Files populate as the learner studies;
+   see `CLAUDE.md` §3a.
+6. Set `.active-topic` (in the repo root) to the new `<short-code>` so
    subsequent chats default to this topic.
-6. Tell the learner the tracker is ready and propose the first session
+7. Tell the learner the tracker is ready and propose the first session
    topic based on the highest-priority domain.
 
 ### 1.3 Re-initialization
@@ -143,12 +150,40 @@ If the session produced a meaningful cross-topic insight (see
    **Cross-topic Links** section. The coach may touch non-active
    trackers **only** to add this row; no other state may be modified.
 
+### Step 2b — Update chapter notes (when triggered)
+
+Whenever the session contained **definitive knowledge** for the active
+topic — a definition, a numbered-point list, a formula, a fixed rule
+or threshold, or a caveat the learner is likely to need again — the
+coach must also update the matching file under
+`topics/<short-code>/notes/`. The triggers, granularity (one file per
+domain), in-place deduplication rules, and verification requirements
+are spelled out in `CLAUDE.md` §3a.
+
+For each notes file touched this session:
+
+1. Edit the appropriate sub-topic section (Definitions / Key Points /
+   Formulas / Worked Examples / Caveats). Refine in place rather than
+   appending duplicates.
+2. Append a one-line bullet under the sub-topic's **Touched In** list
+   pointing at today's session note.
+3. Bump the file's **Last Updated** date.
+4. Add an entry to today's session note's **Chapter Notes Updated**
+   section listing the file and a one-line summary of what changed.
+
+If the session was pure conversation (comprehension checks, recap, no
+new definitive facts surfaced), this step is a no-op — nothing to
+write — and the session note's **Chapter Notes Updated** section is
+left empty. Notes for non-active topics are **never** written from the
+active topic's chat (mirror of the §2 active-topic-only rule).
+
 ### Step 3 — Multi-topic sessions
 
 If the learner studied two (or more) topics in the same chat (after
-explicitly switching with _"switch to <short-code>"_), Steps 1 and 2
-are repeated **independently per topic visited**. Each topic gets its
-own `YYYY-MM-DD.md` session note and its own tracker update. The two
+explicitly switching with _"switch to <short-code>"_), Steps 1, 2, and
+2b are repeated **independently per topic visited**. Each topic gets
+its own `YYYY-MM-DD.md` session note, its own tracker update, and its
+own chapter-notes updates under `topics/<short-code>/notes/`. The two
 sessions are linked only if a crosslink was created via Step 2a.
 
 ### Step 4 — Verify (lightweight)
@@ -178,8 +213,9 @@ This still works. The coach detects the legacy layout when:
 - `topics/` is missing or empty, **and**
 - root `topic-config.md` has been filled in (placeholders replaced).
 
-In that case, the coach uses the legacy paths and treats the multi-topic
-and crosslink machinery as no-ops. On the **first** response of a
+In that case, the coach uses the legacy paths and treats the multi-topic,
+crosslink, and chapter-notes machinery as no-ops (legacy mode has no
+`topics/<short-code>/notes/` directory). On the **first** response of a
 legacy-mode session, the coach should mention once that the learner can
 migrate by:
 
@@ -209,6 +245,10 @@ The repo ships as a clean template:
   template each new topic's `tracker.md` is generated from).
 - `sessions/` contains only `SESSION-TEMPLATE.md` (the source template
   each topic's per-day session note is generated from).
+- `notes/` contains only `NOTES-TEMPLATE.md` and `README.md` (the
+  source template each topic's `notes/<domain-code>-<slug>.md`
+  chapter-notes file is generated from). Real notes appear under
+  `topics/<short-code>/notes/` once a topic is initialized.
 - `crosslinks/` contains only `README.md`, `INDEX.md`, and
   `CROSSLINK-TEMPLATE.md`. Real crosslink files appear as the learner
   produces them.

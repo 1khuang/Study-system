@@ -27,6 +27,11 @@ For any topic you choose, the coach will:
 - 📈 **Maintain a single tracker per topic** — `topics/<topic>/tracker.md`
   is the always-current source of truth for mastered sub-topics, open
   knowledge gaps, and what to study next.
+- 📝 **Build chapter notes as it teaches** — definitions, numbered-point
+  lists, formulas, and rules are distilled into
+  `topics/<topic>/notes/<domain>-<slug>.md` (one file per chapter,
+  organized by syllabus) so the learner has a clean reference to re-read
+  later, separate from the chronological session log.
 - 🎯 **Re-prioritize automatically** — domain weights × coverage × open gaps
   → the next-step study plan after every session.
 - 🔍 **Cite or admit uncertainty** — strictness is configurable per topic
@@ -66,6 +71,10 @@ topics/                        ← one home per topic
     tracker.md                 ← progress for this topic
     sessions/
       YYYY-MM-DD.md            ← one note file per study day, per topic
+    notes/
+      <domain>-<slug>.md       ← one chapter notes file per domain
+                                 (distilled definitions, point-lists,
+                                 formulas, rules — see notes/README.md)
 
 crosslinks/                    ← cross-topic insights
   README.md
@@ -81,6 +90,12 @@ progress/
 sessions/
   SESSION-TEMPLATE.md          ← generic per-session note template
                                  (each topic's daily note is a copy)
+
+notes/
+  NOTES-TEMPLATE.md            ← generic per-chapter notes template
+                                 (each topic's notes/<domain>-<slug>.md
+                                 file is a copy)
+  README.md                    ← what chapter notes are, when to update
 ```
 
 ---
