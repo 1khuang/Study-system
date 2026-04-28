@@ -31,7 +31,16 @@ read, in order:
 5. **`crosslinks/INDEX.md`** (if present) — a brief scan so the coach
    knows which cross-topic insights already exist and can reference
    them when relevant.
-6. **(If present) `skills/README.md` and the front-matter of every
+6. **`topics/<short-code>/notes/`** (if present) — skim the file
+   list and the headings of any chapter file relevant to today's
+   focus. These are the **distilled chapter notes** (definitions,
+   numbered points, formulas, rules) the coach has captured for this
+   topic across all prior sessions. They are the look-up reference,
+   complementing the chronological session log. See §3a for capture
+   rules. If `topics/<short-code>/notes/` does not yet exist, treat
+   this step as a no-op for now and create it during the next
+   write-back.
+7. **(If present) `skills/README.md` and the front-matter of every
    `skills/*/SKILL.md`** — build an in-memory index of available skills
    (`name`, `description`, `triggers`, `phase`). If `skills/` does not
    exist, skip this step and behave as before.
@@ -203,6 +212,92 @@ here are the non-negotiables.
 - ❌ Never create extra ad-hoc tracking files (e.g. `gaps.md`,
   `mastered.md`). The tracker is the single source of truth.
 - ❌ Never skip the tracker update — it is the learner's roadmap.
+
+---
+
+## 3a. Chapter Notes (definitive-knowledge capture)
+
+Sessions are chronological and the tracker is a map; neither is a good
+place to look up *"what is the actual definition of X?"* months later.
+The **chapter notes** under `topics/<short-code>/notes/` are the
+distilled, organized-by-syllabus reference the coach builds up as it
+teaches.
+
+### File layout
+
+- One file per **domain (chapter)** as defined in `topic-config.md` §3,
+  named `<domain-code>-<slug>.md` (e.g. `A-foundations.md`,
+  `B-financing.md`).
+- Inside each file, one section per **sub-topic** in that domain, in
+  the same order as `topic-config.md` §3.
+- The template lives at [`notes/NOTES-TEMPLATE.md`](./notes/NOTES-TEMPLATE.md).
+- See [`notes/README.md`](./notes/README.md) for the rationale and
+  the in/out content boundary.
+
+### When to write to a notes file
+
+During or right after explaining something, the coach must update the
+matching chapter file whenever it states **definitive** knowledge.
+Triggers (any one is enough):
+
+- A **definition**: "X is …", "X means …", "we call this …".
+- A **discrete-point list**: "The four/five/N <things> are: 1) …
+  2) … 3) …".
+- A **formula, rule, threshold, exact value, or date**.
+- A **caveat** or **common-confusion** correction the learner is
+  likely to need again.
+- The learner asks the coach to **save**, **note down**, **add to
+  notes**, or otherwise persist a fact.
+
+Do **not** write to notes for: the question itself, the learner's
+starting understanding, comprehension-check exchanges, encouragement,
+or anything specific to a single conversation. Those belong in the
+session note.
+
+### How to write to a notes file
+
+1. Identify the target sub-topic (e.g. `A.3`). Find the matching file
+   under `topics/<short-code>/notes/`.
+2. If the file does not exist yet (first time this domain is
+   touched), create it from `notes/NOTES-TEMPLATE.md`, fill in the
+   header (domain code, name, topic, short-code, verification level),
+   and seed every sub-topic in the domain with its heading and
+   `_No notes captured yet._`.
+3. Edit the matching sub-topic section. Place each fact under the
+   right sub-heading (Definitions / Key Points / Formulas / Worked
+   Examples / Caveats). **Deduplicate** — if the fact is already
+   present, refine in place rather than appending a duplicate.
+4. If a previously-stored fact is being **corrected**, replace the
+   value in place and add a single line:
+   `_Corrected on YYYY-MM-DD: was X, now Y ({{source}})._`
+5. Append a one-line bullet to the sub-topic's **Touched In** list
+   pointing at today's session note.
+6. Update the file's **Last Updated** date.
+7. In today's session note (§3 Step 1), add an entry under
+   **Chapter Notes Updated** listing every file touched and a
+   one-line summary of what changed.
+
+### Verification
+
+Notes inherit the topic's verification level from §4. For `strict`
+topics, every concrete fact written into a notes file (numbers,
+thresholds, rules, dates, formulas) must carry an inline source
+citation, exactly as it would in a session note.
+
+### Hard rules
+
+- ✅ One file per domain. Do **not** create per-session or per-day
+  notes files.
+- ✅ Sub-topic order matches `topic-config.md` §3 so the chapter reads
+  top-to-bottom as the syllabus does.
+- ✅ Every notes write also produces a "Chapter Notes Updated" entry
+  in today's session note.
+- ❌ Never duplicate an existing fact — refine in place.
+- ❌ Never put session-specific commentary (questions, comprehension
+  checks, encouragement) into a notes file.
+- ❌ Notes never replace the tracker or the session note. They are an
+  **additional**, parallel artifact, written **in the same write-back
+  pass** (§3) — not before, not instead.
 
 ---
 

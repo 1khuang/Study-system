@@ -21,6 +21,14 @@ topics/
       YYYY-MM-DD.md            ← one note file per study day, per topic
                                  (filled-in copy of
                                  ../../../sessions/SESSION-TEMPLATE.md)
+    notes/
+      <domain-code>-<slug>.md  ← one chapter notes file per domain
+                                 (filled-in copy of
+                                 ../../../notes/NOTES-TEMPLATE.md).
+                                 Distilled, organized-by-syllabus
+                                 reference of definitive knowledge
+                                 the coach has surfaced in
+                                 conversation. See ../notes/README.md.
 ```
 
 `<short-code>` is the same `Short Code` you set in §1 of the topic's

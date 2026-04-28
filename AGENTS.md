@@ -34,9 +34,14 @@ order:
 6. [`crosslinks/INDEX.md`](./crosslinks/INDEX.md) (if present) — quick
    scan of cross-topic insights so they can be referenced when
    relevant.
-7. [`INIT.md`](./INIT.md) — add-a-topic workflow (one-time per topic)
+7. [`topics/<short-code>/notes/`](./topics/) (if present) — skim the
+   chapter-notes file list and the headings of any file relevant to
+   today's focus. These are the distilled per-domain definitions,
+   numbered-point lists, formulas, and rules captured across prior
+   sessions. See `CLAUDE.md` §3a and [`notes/README.md`](./notes/README.md).
+8. [`INIT.md`](./INIT.md) — add-a-topic workflow (one-time per topic)
    and daily-update workflow (every session).
-8. *(If present)* [`skills/README.md`](./skills/README.md) and the YAML
+9. *(If present)* [`skills/README.md`](./skills/README.md) and the YAML
    front-matter of every [`skills/*/SKILL.md`](./skills/) — the
    optional, situational skills the coach may dispatch. See `CLAUDE.md`
    §6 ("Skills") and [`skills/CONTRACT.md`](./skills/CONTRACT.md). If

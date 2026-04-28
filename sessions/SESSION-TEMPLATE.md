@@ -83,6 +83,20 @@
 
 ---
 
+## Chapter Notes Updated
+
+> List every file under `topics/<short-code>/notes/` that was edited
+> this session, with a one-line summary of what changed. Leave the
+> table empty if no definitive knowledge surfaced today (pure
+> conversation / comprehension checks). See `CLAUDE.md` §3a and
+> `INIT.md` §2b.
+
+| Notes file | Sub-topic(s) | What changed |
+|------------|--------------|--------------|
+| {{../notes/A-foundations.md}} | {{A.3}} | {{Added definition of X and the 4 conditions for Y}} |
+
+---
+
 ## Action Items for Next Session
 
 - [ ] **Review**: {{topics to revisit}}
@@ -103,3 +117,5 @@
 - [ ] Recomputed **Domain Progress Summary**
 - [ ] Recomputed **Next-Step Study Plan**
 - [ ] Appended row to **Session Index**
+- [ ] Updated **Chapter Notes** for any definitive knowledge surfaced
+      this session (and recorded touched files above)
