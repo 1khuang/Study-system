@@ -43,6 +43,22 @@
 
 ---
 
+## Source Coverage
+
+> How many raw assets back this topic, per domain. Mirrors the
+> Coverage Snapshot in `raw/INDEX.md`. Domains with `0` total are
+> "no source of truth on hand yet" — under `Verification Policy.Level
+> = strict`, the coach should fetch (or ask the learner to upload)
+> before stating definitive facts in those areas. See
+> [`../../raw/README.md`](../../raw/README.md) and `CLAUDE.md` §4.
+
+| Domain | User | Web | Derived | Total |
+|--------|-----:|----:|--------:|------:|
+| {{A. Domain Name}} | 0 | 0 | 0 | 0 |
+| ...    |      |     |         |       |
+
+---
+
 ## Per-Domain Detail
 
 > One section per domain from `topic-config.md`.

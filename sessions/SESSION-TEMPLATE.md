@@ -32,7 +32,7 @@
 - **Question(s) asked**: {{verbatim if reasonable}}
 - **Initial understanding**: {{what learner knew going in}}
 - **Explanation given**: {{short summary of what was taught}}
-- **Sources cited**: {{links / pages — required if config verification level is `strict`}}
+- **Sources cited**: {{links / pages — required if config verification level is `strict`. For `strict`, list **both** the in-repo `raw/` path (primary) **and** the original URL (secondary), per `CLAUDE.md` §4.1.}}
 - **Comprehension check**: {{question posed → learner's answer → assessment}}
 - **Result**: {{Mastered / Partial / Needs more work}}
 
@@ -97,6 +97,21 @@
 
 ---
 
+## Raw Assets Added
+
+> List every file added under `topics/<short-code>/raw/` this session
+> — both learner uploads (`raw/user/`) and AI-archived web fetches
+> (`raw/web/`), plus any derived extracts. Each new asset must also
+> have a sibling `.meta.md` and a row in `raw/INDEX.md`. Leave the
+> table empty if nothing was added today. See `CLAUDE.md` §4.1 and
+> `INIT.md` §2c.
+
+| Raw file | Type (user / web / derived) | Source (URL or uploader) | Bound to sub-topic(s) |
+|----------|-----------------------------|--------------------------|-----------------------|
+| {{../raw/web/2026-05-01-irs-pub-590a.md}} | web | https://www.irs.gov/... | {{F.51}} |
+
+---
+
 ## Action Items for Next Session
 
 - [ ] **Review**: {{topics to revisit}}
@@ -119,3 +134,5 @@
 - [ ] Appended row to **Session Index**
 - [ ] Updated **Chapter Notes** for any definitive knowledge surfaced
       this session (and recorded touched files above)
+- [ ] Updated `raw/INDEX.md` and **Source Coverage** (in the tracker)
+      for any new raw assets added this session (recorded above)

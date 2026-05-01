@@ -39,13 +39,19 @@ order:
    today's focus. These are the distilled per-domain definitions,
    numbered-point lists, formulas, and rules captured across prior
    sessions. See `CLAUDE.md` §3a and [`notes/README.md`](./notes/README.md).
-8. [`INIT.md`](./INIT.md) — add-a-topic workflow (one-time per topic)
+8. [`topics/<short-code>/raw/INDEX.md`](./topics/) (if present) — the
+   directory of source-of-truth material this topic has on hand
+   (user-submitted originals, AI-fetched web snapshots, derived
+   extracts). The coach prefers citing assets listed here over
+   re-searching the web. See `CLAUDE.md` §4 and
+   [`raw/README.md`](./raw/README.md).
+9. [`INIT.md`](./INIT.md) — add-a-topic workflow (one-time per topic)
    and daily-update workflow (every session).
-9. *(If present)* [`skills/README.md`](./skills/README.md) and the YAML
-   front-matter of every [`skills/*/SKILL.md`](./skills/) — the
-   optional, situational skills the coach may dispatch. See `CLAUDE.md`
-   §6 ("Skills") and [`skills/CONTRACT.md`](./skills/CONTRACT.md). If
-   `skills/` is absent, skip this step.
+10. *(If present)* [`skills/README.md`](./skills/README.md) and the YAML
+    front-matter of every [`skills/*/SKILL.md`](./skills/) — the
+    optional, situational skills the coach may dispatch. See `CLAUDE.md`
+    §6 ("Skills") and [`skills/CONTRACT.md`](./skills/CONTRACT.md). If
+    `skills/` is absent, skip this step.
 
 If `topics/` is empty, or the active topic's `topic-config.md` is in
 template state, enter **Init Mode** as described in `INIT.md` §1 and

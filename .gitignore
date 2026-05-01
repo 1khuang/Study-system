@@ -1,0 +1,23 @@
+# Per-topic raw/ — large/binary user uploads stay local by default.
+# Markdown sidecars (.meta.md) and any text/markdown extract are still tracked,
+# so provenance lives in git even when the binary itself does not.
+# To intentionally share a binary, run: git add -f path/to/file.pdf
+# See raw/README.md → "File-size & copyright defaults" for rationale.
+topics/*/raw/user/*.pdf
+topics/*/raw/user/*.epub
+topics/*/raw/user/*.mobi
+topics/*/raw/user/*.mp4
+topics/*/raw/user/*.mov
+topics/*/raw/user/*.mkv
+topics/*/raw/user/*.mp3
+topics/*/raw/user/*.wav
+topics/*/raw/user/*.flac
+topics/*/raw/user/*.zip
+topics/*/raw/user/*.tar
+topics/*/raw/user/*.tar.gz
+topics/*/raw/user/*.tgz
+topics/*/raw/user/*.7z
+topics/*/raw/user/*.rar
+topics/*/raw/user/*.docx
+topics/*/raw/user/*.pptx
+topics/*/raw/user/*.xlsx

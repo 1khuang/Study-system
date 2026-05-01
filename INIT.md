@@ -63,9 +63,19 @@ tracker exists), the coach must:
    header filled in and one section per sub-topic, each marked
    `_No notes captured yet._`. Files populate as the learner studies;
    see `CLAUDE.md` §3a.
-6. Set `.active-topic` (in the repo root) to the new `<short-code>` so
+6. Make sure `topics/<short-code>/raw/` exists with three empty
+   subdirectories `user/`, `web/`, and `derived/`, plus a fresh
+   `raw/INDEX.md` generated from
+   [`raw/RAW-INDEX-TEMPLATE.md`](./raw/RAW-INDEX-TEMPLATE.md) (header
+   filled in with topic name, short-code, today's date, the
+   verification level, and the resolved Web Search Policy from
+   `topic-config.md` §6). All three asset tables start as
+   `_none yet_`. The folders fill as the learner uploads originals
+   (`raw/user/`) and as the coach archives web fetches
+   (`raw/web/`); see `CLAUDE.md` §4.
+7. Set `.active-topic` (in the repo root) to the new `<short-code>` so
    subsequent chats default to this topic.
-7. Tell the learner the tracker is ready and propose the first session
+8. Tell the learner the tracker is ready and propose the first session
    topic based on the highest-priority domain.
 
 ### 1.3 Re-initialization
@@ -177,14 +187,49 @@ write — and the session note's **Chapter Notes Updated** section is
 left empty. Notes for non-active topics are **never** written from the
 active topic's chat (mirror of the §2 active-topic-only rule).
 
+### Step 2c — Update raw assets (when triggered)
+
+Whenever this session involved either (a) the coach fetching from the
+web for a factual claim, or (b) the learner uploading a new original
+file, the coach must — in the same write-back pass — keep the topic's
+`raw/` directory in sync. The full retrieve→archive→cite loop is
+spelled out in `CLAUDE.md` §4.1; the bookkeeping side of it is:
+
+1. Ensure the asset file exists under
+   `topics/<short-code>/raw/{user,web,derived}/` with a sibling
+   `.meta.md` (filled in from
+   [`../raw/META-TEMPLATE.md`](./raw/META-TEMPLATE.md)). Files under
+   `raw/user/` and `raw/web/` are immutable — never overwrite; if a
+   web page was re-fetched today, write a new dated file.
+2. If `topics/<short-code>/raw/` does not yet exist (an older topic
+   from before this convention), **lazily create** it with the three
+   subfolders and a fresh `INDEX.md` from
+   [`../raw/RAW-INDEX-TEMPLATE.md`](./raw/RAW-INDEX-TEMPLATE.md), then
+   add the asset.
+3. Append a row to the appropriate table in
+   `topics/<short-code>/raw/INDEX.md` (`User-Submitted Originals`,
+   `Web Snapshots`, or `Derived Extracts`). Bump the file's
+   **Last Updated** date and refresh the **Coverage Snapshot** counts.
+4. In today's session note (Step 1), fill in the **Raw Assets Added**
+   table with one row per new asset (file path, kind, source URL or
+   uploader, bound sub-topic codes).
+5. If the active topic's tracker has a **Source Coverage** section,
+   bump the relevant domain's count to match.
+
+If the session was pure conversation (no web fetch, no upload), this
+step is a no-op and the session note's Raw Assets Added table is left
+empty.
+
 ### Step 3 — Multi-topic sessions
 
 If the learner studied two (or more) topics in the same chat (after
-explicitly switching with _"switch to <short-code>"_), Steps 1, 2, and
-2b are repeated **independently per topic visited**. Each topic gets
-its own `YYYY-MM-DD.md` session note, its own tracker update, and its
-own chapter-notes updates under `topics/<short-code>/notes/`. The two
-sessions are linked only if a crosslink was created via Step 2a.
+explicitly switching with _"switch to <short-code>"_), Steps 1, 2,
+2b, and 2c are repeated **independently per topic visited**. Each
+topic gets its own `YYYY-MM-DD.md` session note, its own tracker
+update, its own chapter-notes updates under
+`topics/<short-code>/notes/`, and its own raw-asset bookkeeping under
+`topics/<short-code>/raw/`. The two sessions are linked only if a
+crosslink was created via Step 2a.
 
 ### Step 4 — Verify (lightweight)
 
@@ -249,6 +294,13 @@ The repo ships as a clean template:
   source template each topic's `notes/<domain-code>-<slug>.md`
   chapter-notes file is generated from). Real notes appear under
   `topics/<short-code>/notes/` once a topic is initialized.
+- `raw/` contains only `README.md`, `RAW-INDEX-TEMPLATE.md`, and
+  `META-TEMPLATE.md` (the source templates each topic's
+  `raw/INDEX.md` and per-asset `<file>.meta.md` are generated from).
+  Real raw assets appear under `topics/<short-code>/raw/` once a
+  topic is initialized; large binaries under
+  `topics/*/raw/user/` are gitignored by default — see `.gitignore`
+  and `raw/README.md` → "File-size & copyright defaults".
 - `crosslinks/` contains only `README.md`, `INDEX.md`, and
   `CROSSLINK-TEMPLATE.md`. Real crosslink files appear as the learner
   produces them.
