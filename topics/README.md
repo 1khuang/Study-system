@@ -29,6 +29,16 @@ topics/
                                  reference of definitive knowledge
                                  the coach has surfaced in
                                  conversation. See ../notes/README.md.
+    raw/                       ← source-of-truth material for this topic
+      INDEX.md                 ← directory page (filled-in copy of
+                                 ../../../raw/RAW-INDEX-TEMPLATE.md)
+      user/                    ← learner-submitted originals (PDFs, books…)
+      web/                     ← AI-fetched web/document snapshots,
+                                 dated as YYYY-MM-DD-<slug>.md
+      derived/                 ← optional extracts built from the above.
+                                 Each asset has a sibling .meta.md
+                                 (../../../raw/META-TEMPLATE.md). See
+                                 ../raw/README.md.
 ```
 
 `<short-code>` is the same `Short Code` you set in §1 of the topic's
