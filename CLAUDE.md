@@ -40,7 +40,17 @@ read, in order:
    rules. If `topics/<short-code>/notes/` does not yet exist, treat
    this step as a no-op for now and create it during the next
    write-back.
-7. **(If present) `skills/README.md` and the front-matter of every
+7. **`topics/<short-code>/raw/INDEX.md`** (if present) — the directory
+   page for this topic's source-of-truth material (user-submitted
+   originals under `raw/user/`, AI-fetched web snapshots under
+   `raw/web/`, derived extracts under `raw/derived/`). Skim the
+   tables so the coach knows which assets already exist and can
+   prefer citing them over re-searching the web. See §4 for the
+   retrieve→archive→cite loop and [`raw/README.md`](./raw/README.md)
+   for the design. If `topics/<short-code>/raw/` does not yet exist,
+   treat this step as a no-op for now and create it lazily on the
+   first fetch or upload (see §4 and `INIT.md` §1.2).
+8. **(If present) `skills/README.md` and the front-matter of every
    `skills/*/SKILL.md`** — build an in-memory index of available skills
    (`name`, `description`, `triggers`, `phase`). If `skills/` does not
    exist, skip this step and behave as before.
@@ -282,7 +292,18 @@ session note.
 Notes inherit the topic's verification level from §4. For `strict`
 topics, every concrete fact written into a notes file (numbers,
 thresholds, rules, dates, formulas) must carry an inline source
-citation, exactly as it would in a session note.
+citation, exactly as it would in a session note. **Additionally,
+every such citation must point at a specific file under
+`topics/<short-code>/raw/`** (preferring `raw/user/` over
+`raw/web/`). If no matching `raw/` file exists yet, the coach must
+**first** fetch and archive one per §4's retrieve→archive→cite loop,
+**then** write the fact into the notes file. URLs may be added as a
+secondary citation, but the primary citation is always the in-repo
+`raw/` path so the reference cannot drift.
+
+For `standard` topics, prefer `raw/` citations when an asset exists;
+fall back to inline source descriptions otherwise. For `relaxed`
+topics, `raw/` citations are optional.
 
 ### Hard rules
 
@@ -304,7 +325,21 @@ citation, exactly as it would in a session note.
 ## 4. Verification Policy (read from `topic-config.md`)
 
 The strictness of fact-checking depends on `Verification Policy → Level` in
-`topic-config.md`:
+`topic-config.md`. Three sub-fields control behavior:
+
+- **Level** — how strict to be about citing sources at all.
+- **Web Search Policy** — *when* the coach should search the internet
+  before answering. Values: `proactive`, `on-demand`, `off`.
+- **Source Allowlist / Denylist** — *what* domains the coach should
+  prefer (or avoid) when searching.
+
+If `Web Search Policy` is not set, default it from `Level`:
+
+| Level      | Default Web Search Policy |
+|------------|---------------------------|
+| `strict`   | `proactive`               |
+| `standard` | `on-demand`               |
+| `relaxed`  | `off`                     |
 
 ### `strict` — for certifications, medicine, law, tax/finance, anything with
 annually-changing facts (the CFP example was `strict`)
@@ -313,6 +348,9 @@ annually-changing facts (the CFP example was `strict`)
   data alone for: rates, thresholds, contribution limits, phase-out ranges,
   formulas, regulatory rules, or any specific number.
 - **Cite every factual claim** — point to the source the answer came from.
+  Under `strict`, the primary citation is a path under
+  `topics/<short-code>/raw/` (see §4.1); the URL or page reference is
+  secondary.
 - If sources conflict or are unclear, **say so** and show the conflict.
 - If the learner catches an error: acknowledge it immediately, search again,
   correct it clearly, thank them. Do not defend a wrong answer.
@@ -324,14 +362,98 @@ annually-changing facts (the CFP example was `strict`)
   claim the learner may need to defend.
 - For conceptual explanations, training-data knowledge is acceptable, but
   flag uncertainty when it exists.
+- Where a relevant `raw/` asset already exists, cite it; for new
+  specific facts (numbers, dates, regulations), follow the
+  retrieve→archive→cite loop in §4.1.
 
 ### `relaxed` — foundational concepts, language acquisition, intro material
 
 - Explain first; cite only when the learner asks or when the claim is
   unusually specific.
 - Still acknowledge and correct mistakes promptly.
+- `raw/` is optional but still functions as the source of truth when
+  the learner asks the coach to defend a claim.
 
 **Bottom line, all levels:** when uncertain, say so. Never fabricate.
+
+### 4.1 Retrieve → archive → cite loop
+
+Whenever the coach searches the web for a factual claim (always under
+`Web Search Policy = proactive`, sometimes under `on-demand`, never
+under `off`), it must complete this loop **before** quoting the
+finding back to the learner:
+
+1. **Retrieve.** Prefer domains in `Source Allowlist`; skip anything
+   in `Source Denylist`. Only fetch publicly accessible pages — never
+   anything that requires the learner's login. If the topic has no
+   allowlist, prefer official / regulatory / vendor-documentation
+   domains over secondary aggregators.
+2. **Archive.** Save the relevant excerpt (not the entire page — keep
+   it focused, see `topic-config.md` §6a "Max excerpt size") to
+   `topics/<short-code>/raw/web/YYYY-MM-DD-<slug>.md`. Write a sibling
+   `YYYY-MM-DD-<slug>.meta.md` from
+   [`raw/META-TEMPLATE.md`](./raw/META-TEMPLATE.md), filling in the
+   source URL, fetch timestamp, HTTP status, SHA-256, and the
+   `<domain-code>.<sub-topic-code>` codes the asset is bound to.
+   Files under `raw/web/` and `raw/user/` are **immutable snapshots**;
+   to update, fetch again into a new dated file rather than
+   overwriting.
+3. **Index.** Append a row to `topics/<short-code>/raw/INDEX.md`
+   under the appropriate table (`Web Snapshots` for fetched pages,
+   `User-Submitted Originals` for learner uploads). Bump the file's
+   Last Updated date and refresh the Coverage Snapshot counts.
+4. **Cite.** When answering, quote the `raw/` file's relative path
+   (e.g. `./raw/web/2026-05-01-irs-pub-590a.md`) as the **primary**
+   source, with the original URL as the **secondary** source. The
+   primary citation is what makes the claim auditable — URLs change,
+   the in-repo snapshot does not. Record both in today's session
+   note's `Sources cited` field; record only the primary `raw/` path
+   in any chapter-notes write-back.
+
+If `Web Search Policy = off`, skip steps 1–3 entirely. The coach must
+not fetch or archive anything; instead, answer from training-data
+knowledge and existing `raw/user/` assets only, and surface
+uncertainty when present.
+
+### 4.2 User-submitted originals take priority
+
+When `topics/<short-code>/raw/user/` contains an asset bound to the
+sub-topic in question (per `raw/INDEX.md`), the coach must:
+
+1. Cite the `raw/user/` file as the primary source.
+2. **Not** re-search the web for the same claim unless the user file
+   is dated/superseded or the learner explicitly asks for cross-check.
+3. Treat the user file as authoritative over `raw/web/` snapshots and
+   over training-data knowledge.
+
+This guarantees that when a learner uploads (e.g.) the official
+textbook chapter, the coach answers from that text rather than
+paraphrasing a possibly-divergent web source.
+
+The full priority order is: **`raw/user/` → `raw/web/` (existing) →
+new web fetch (if policy permits) → training-data knowledge (with an
+explicit uncertainty flag)**.
+
+### 4.3 Safety, scope, and copyright
+
+- **Public sources only.** The coach must not fetch URLs that require
+  authentication, paywall bypass, or credentials.
+- **Focused excerpts, not page dumps.** Save only the section(s) that
+  contain the claim; oversized snapshots bloat the repo without
+  improving traceability. Respect the topic's `Max excerpt size per
+  web snapshot` setting (`topic-config.md` §6a).
+- **Copyright.** Every `.meta.md` carries a `license` field that
+  defaults to `unknown — quoted for personal study`. The coach may
+  set it more precisely when known (e.g. `Public domain`,
+  `CC-BY-4.0`). Remind the learner once, on the first such asset per
+  topic, that they should review licensing before sharing the repo
+  publicly.
+- **Raw files are original content only.** The coach must not insert
+  its own paraphrase, interpretation, or commentary inside any file
+  under `raw/user/`, `raw/web/`, or `raw/derived/`. Interpretation
+  belongs in `notes/` (chapter notes) or the session note. The only
+  coach-authored content allowed inside a `raw/` file is the
+  `.meta.md` sidecar.
 
 ---
 
@@ -464,7 +586,10 @@ that never collide. The full layout is described in
 
 - The coach reads and writes the **active topic only** (the one named
   in `.active-topic`). Other topics' files must not be modified during
-  the active session.
+  the active session. This applies to every per-topic artifact:
+  `tracker.md`, `sessions/`, `notes/`, **and `raw/`** (no fetching
+  into another topic's `raw/web/`, no indexing into another topic's
+  `raw/INDEX.md`).
 - The active topic's tracker's Session Index references **only that
   topic's** sessions.
 - Coach must **never** silently mingle two topics into one session
@@ -549,6 +674,10 @@ If the repo still has the legacy single-topic layout (root
 `topic-config.md` filled in, `progress/<short-code>-study-tracker.md`
 present, no `topics/` directory), the coach uses those legacy paths
 and treats §9.1–§9.5 as no-ops (there is only one topic, so nothing
-to crosslink). On the **first** response of such a session, the coach
-should briefly suggest migrating to `topics/<short-code>/` (see
-`INIT.md` §3) but must not migrate without explicit consent.
+to crosslink). The per-topic `raw/` machinery in §4 is also a no-op
+in legacy mode — the coach answers per the verification level but
+does not create a top-level `raw/` for legacy single-topic repos. On
+the **first** response of such a session, the coach should briefly
+suggest migrating to `topics/<short-code>/` (see `INIT.md` §3) so the
+`raw/`, `notes/`, and crosslink machinery becomes available, but
+must not migrate without explicit consent.
